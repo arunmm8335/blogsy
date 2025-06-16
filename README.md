@@ -57,6 +57,45 @@
 
 ---
 
+## 📂 Project Structure
+
+The project is organized into a monorepo structure with separate directories for the `backend` and `frontend`, and Docker configuration at the root level.
+
+/blogging-platform
+├── .env                  # Root environment variables for Docker Compose (sensitive)
+├── .gitignore            # Files and folders to be ignored by Git
+├── docker-compose.yml    # Orchestrates all Docker containers
+├── README.md             # You are here!
+│
+├── backend/
+│   ├── .dockerignore     # Files to ignore during the backend Docker build
+│   ├── Dockerfile        # Recipe for building the backend production image
+│   ├── package.json      # Backend dependencies and scripts
+│   ├── server.js         # The entry point for the Node.js server
+│   ├── config/           # Database, Redis, and Cloudinary configuration
+│   ├── controllers/      # Logic for handling API requests (MVC Controller)
+│   ├── middleware/       # Custom middleware (auth, error handling, etc.)
+│   ├── models/           # Mongoose schemas for the database (MVC Model)
+│   └── routes/           # API route definitions (MVC View/Router)
+│
+└── frontend/
+    ├── .dockerignore     # Files to ignore during the frontend Docker build
+    ├── Dockerfile        # Recipe for building the frontend production image
+    ├── nginx.conf        # Nginx configuration for serving the React app
+    ├── package.json      # Frontend dependencies and scripts
+    ├── public/           # Public assets and index.html
+    └── src/
+        ├── App.js        # Main application component with routing
+        ├── index.js      # The entry point for the React app
+        ├── assets/       # Static assets like images and fonts
+        ├── components/   # Reusable UI components (Header, PostItem, etc.)
+        ├── context/      # React Context providers (Auth, Theme)
+        ├── hooks/        # Custom React hooks (useDebounce)
+        ├── pages/        # Page-level components (HomePage, PostPage, etc.)
+        └── services/     # API service functions (using Axios)
+
+---
+
 ## 🏁 Getting Started
 
 This guide will walk you through setting up and running the Blogsy application on your local machine using Docker.
