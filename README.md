@@ -16,7 +16,7 @@
 -   **Full CRUD for Posts:** Authenticated users can create, read, update, and delete their own posts.
 -   **Rich Text Editor:** Utilizes **React Quill**, a powerful WYSIWYG editor, for creating beautifully formatted blog posts.
 -   **Cloud-Based Media Uploads:** Seamless image and video uploads for posts and profiles, handled by **Cloudinary**.
--   **Dynamic Commenting System:** Users can comment on posts and reply to other comments in nested threads.
+-   **Dynamic Commenting System:** Users can comment on posts and reply to other comments in nested discussion threads.
 -   **Post Likes:** Interactive "like" functionality on posts.
 
 ### UI & UX
@@ -57,15 +57,58 @@
 
 ---
 
+## 📂 Project Structure
+
+The project is organized into a monorepo structure with separate directories for the `backend` and `frontend`, and Docker configuration at the root level.
+
+/blogging-platform
+├── .env # Root environment variables for Docker Compose (sensitive)
+├── .gitignore # Files and folders to be ignored by Git
+├── docker-compose.yml # Orchestrates all Docker containers
+├── README.md # You are here!
+│
+├── backend/
+│ ├── .dockerignore # Files to ignore during the backend Docker build
+│ ├── Dockerfile # Recipe for building the backend production image
+│ ├── package.json # Backend dependencies and scripts
+│ ├── server.js # The entry point for the Node.js server
+│ ├── config/ # Database, Redis, and Cloudinary configuration
+│ ├── controllers/ # Logic for handling API requests (MVC Controller)
+│ ├── middleware/ # Custom middleware (auth, error handling, etc.)
+│ ├── models/ # Mongoose schemas for the database (MVC Model)
+│ └── routes/ # API route definitions (MVC View/Router)
+│
+└── frontend/
+├── .dockerignore # Files to ignore during the frontend Docker build
+├── Dockerfile # Recipe for building the frontend production image
+├── nginx.conf # Nginx configuration for serving the React app
+├── package.json # Frontend dependencies and scripts
+├── public/ # Public assets and index.html
+└── src/
+├── App.js # Main application component with routing
+├── index.js # The entry point for the React app
+├── assets/ # Static assets like images and fonts
+├── components/ # Reusable UI components (Header, PostItem, etc.)
+├── context/ # React Context providers (Auth, Theme)
+├── hooks/ # Custom React hooks (useDebounce)
+├── pages/ # Page-level components (HomePage, PostPage, etc.)
+└── services/ # API service functions (using Axios)
+
+
+---
+
 ## 🏁 Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+This guide will walk you through setting up and running the Blogsy application on your local machine using Docker.
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/en/) (v18.x or later)
--   [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
--   A Git client.
+Before you begin, ensure you have the following installed and configured:
+
+1.  **[Docker Desktop](https://www.docker.com/products/docker-desktop/):** This is the **only essential software** needed to run the entire project. It includes Docker Engine and Docker Compose, which manage all application services.
+2.  **[Git](https://git-scm.com/downloads):** Required to clone the repository.
+3.  **[Cloudinary](https://cloudinary.com/users/register/free) Account:** Needed for image and video uploads. You'll need your `Cloud Name`, `API Key`, and `API Secret`.
+4.  **Gmail Account with an App Password:** Required for the "Forgot Password" email feature. You must have 2-Step Verification enabled on your Google account to create one.
 
 ### Local Setup Instructions
 
@@ -75,32 +118,34 @@ These instructions will get you a copy of the project up and running on your loc
     cd blogsy
     ```
 
-2.  **Configure Environment Variables:**
-    Create a file named `.env` in the root of the project. This file holds all your secret keys. Copy the contents of the `.env.example` section below into this new file and fill in your actual credentials.
+2.  **Create and Configure the Environment File:**
+    In the root of the `blogsy` folder, create a new file named `.env`. Copy the contents from the `.env.example` section below into this file and fill in your actual secret keys.
 
-3.  **Launch with Docker Compose:**
-    From the root directory of the project, run the following command. This will build the production-ready images for all services and start the containers.
+3.  **Launch the Application with Docker Compose:**
+    This is the **only command you need to run the entire project**. Make sure Docker Desktop is running, then execute from the root directory:
     ```bash
     docker-compose up --build
     ```
-    *(The first build may take several minutes. Subsequent builds will be much faster.)*
+    *The `--build` flag builds the images. The first time will be slow; subsequent runs will be much faster. After the first successful build, you can just run `docker-compose up`.*
 
 4.  **Access the Application:**
-    -   **Frontend:** Open your browser and navigate to **`http://localhost:3000`**
-    -   **Backend API:** The API is accessible at `http://localhost:5000`
+    Once the containers are running, open your web browser:
+    -   **Frontend:** Navigate to **`http://localhost:3000`**
+
+5.  **Stopping the Application:**
+    To stop all running containers, go to the terminal where `docker-compose` is running and press **`Ctrl + C`**. To remove the containers completely, run `docker-compose down`.
 
 ---
 
 ## ⚙️ Environment Configuration (`.env.example`)
 
-Create a `.env` file in the project's root directory and add the following, replacing the placeholder values with your own keys.
+Create a `.env` file in the project's root directory and populate it with your keys.
 
 ```env
 # A long, random, and secret string for signing JWTs
 JWT_SECRET=your_super_secret_jwt_key_that_is_long_and_random
 
-# Credentials for Nodemailer to send password reset emails
-# For Gmail, this requires enabling 2-Step Verification and creating an App Password.
+# Credentials for Nodemailer (use a 16-character Google App Password)
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your16charactergoogleappword
 
