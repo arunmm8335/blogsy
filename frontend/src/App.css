@@ -1,0 +1,21 @@
+/* In /src/App.css */
+/* This file now ONLY contains styles for the DefaultLayout */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main.page-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  /* We remove justify-content: center here to let content flow naturally */
+}
+.page-container {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+/* ... */

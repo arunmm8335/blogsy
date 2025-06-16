@@ -1,0 +1,179 @@
+/* In /src/pages/Auth.css */
+
+/* The main full-screen wrapper */
+.auth-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* The two-panel container */
+.auth-container {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 650px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* Left "Welcome" Panel */
+.welcome-panel {
+  flex: 1;
+  padding: 4rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(5px);
+}
+
+.welcome-title {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.welcome-text {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  max-width: 400px;
+  margin-bottom: 2rem;
+}
+
+.welcome-socials {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.welcome-socials a {
+  color: #fff;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  transition: all 0.2s ease-in-out;
+}
+
+.welcome-socials a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* Right "Form" Panel */
+.form-panel {
+  flex: 1;
+  background-color: #1e1e1e; /* A dark, solid background for the form */
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff; /* Default text color in this panel */
+}
+
+/* --- Form-specific styles, now scoped to this page --- */
+.form-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #fff;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  color: #aaa;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.forgot-password {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.btn-auth { /* Renamed to avoid conflicts */
+  width: 100%;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #e55335;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-auth:hover {
+  background-color: #d04a2e;
+}
+
+.form-footer-text {
+  margin-top: 2.5rem;
+  font-size: 0.9rem;
+  color: #aaa;
+  text-align: center;
+}
+
+.form-footer-text a {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .welcome-panel {
+    display: none;
+  }
+  .form-panel {
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+  }
+}

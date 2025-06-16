@@ -1,0 +1,69 @@
+/* In /src/index.css */
+
+/* 1. Define Light Theme variables (with corrected high-contrast colors) */
+:root {
+  /* --- THE FIX IS HERE --- */
+  --background-color: #f4f5f7;       /* A very light, soft grey background */
+  --text-color: #1a202c;             /* A dark, readable charcoal for main text */
+  --card-background: #ffffff;          /* Pure white for cards to stand out */
+  --card-border: #e2e8f0;            /* A subtle light grey border */
+  --header-background: #ffffff;        /* White header */
+  --header-border: #e2e8f0;           /* Subtle border for the header */
+  --primary-color: #e65a3e;           /* Your brand's primary color (no change) */
+  --primary-hover-color: #d34f36;     /* Your brand's hover color (no change) */
+  --secondary-text-color: #718096;    /* A clear, medium grey for meta-data */
+  --button-text-color: #ffffff;        /* White text for buttons (no change) */
+  --tag-background: #edf2f7;          /* A light grey for tag backgrounds */
+  --link-color: #e65a3e;             /* Your brand color for links (no change) */
+
+  /* Fonts (no change) */
+  --font-heading: 'Oswald', sans-serif;
+  --font-body: 'Noto Sans', sans-serif;
+}
+
+/* 2. Define Dark Theme variables (These are already good, no changes needed) */
+body.dark {
+  --background-color: #121212;
+  --text-color: #e0e0e0;
+  --card-background: #1e1e1e;
+  --card-border: #333333;
+  --header-background: #1e1e1e;
+  --header-border: #333333;
+  --primary-color: #e65a3e;
+  --primary-hover-color: #f06a52;
+  --secondary-text-color: #aaaaaa;
+  --button-text-color: #ffffff;
+  --tag-background: #333333;
+  --link-color: #f06a52;
+}
+
+/* 3. Apply the variables to base elements (no changes needed) */
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.2s, color 0.2s;
+  font-family: var(--font-body);
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}

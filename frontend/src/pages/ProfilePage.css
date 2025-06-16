@@ -1,0 +1,111 @@
+/* This container adds padding and centers the content within the full-width page */
+.profile-page-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+/* The main two-column grid layout */
+.profile-container {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+/* The left-side profile card */
+.profile-card {
+  position: sticky;
+  top: 2rem;
+  background-color: var(--card-background);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--card-border); /* Changed to 1px for subtlety */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+  border: 4px solid var(--primary-color);
+}
+
+.profile-card h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.profile-bio {
+  font-style: italic;
+  color: var(--secondary-text-color); /* Corrected variable name */
+  margin-bottom: 1.5rem;
+  line-height: 1.5; /* Added for better readability */
+}
+
+/* The container for social links */
+.profile-socials {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem; /* Added space before the button */
+}
+
+.profile-socials a {
+  color: var(--secondary-text-color);
+  transition: color 0.2s ease;
+}
+
+.profile-socials a:hover {
+  color: var(--primary-color);
+}
+
+.profile-posts {
+  background: transparent; /* Remove background to blend with page */
+  padding: 0; /* Remove padding */
+  border: none; /* Remove border */
+  box-shadow: none; /* Remove shadow */
+}
+
+.profile-posts h2 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 1rem;
+}
+
+.profile-posts-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem; /* Adjusted gap */
+  
+  /* --- THIS IS THE CRITICAL FIX --- */
+  /* This tells the grid to automatically manage rows and make them equal height */
+  grid-auto-rows: 1fr;
+  /* ---------------------------------- */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .profile-container {
+    grid-template-columns: 1fr; /* Stack columns on smaller screens */
+  }
+  .profile-card {
+    position: static; /* Unstick the profile card */
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-posts-list {
+    grid-template-columns: 1fr;
+  }
+}

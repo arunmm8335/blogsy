@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # 🚀 Backend - Express + Cloudinary uploader
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: blogsy-backend
+    ports:
+      - "5000:5000"
+    env_file: ./.env
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/blogsy-db
+    depends_on:
+      - mongodb
+    networks:
+      - blogsy-network
+
+  # 🌐 Frontend - React served via Nginx
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: blogsy-frontend
+    ports:
+      - "3000:80"  # React devs expect this
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://backend:5000/api
+    networks:
+      - blogsy-network
+
+  # 🧠 MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: blogsy-mongodb
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - blogsy-network
+
+# 🛠 Shared network so containers talk to each other
+networks:
+  blogsy-network:
+    driver: bridge
+
+# 💾 Named volume for Mongo persistence
+volumes:
+  mongo-data:

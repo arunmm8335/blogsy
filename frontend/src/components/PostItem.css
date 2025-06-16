@@ -1,0 +1,131 @@
+/* The Link tag that wraps the entire card */
+.post-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%; /* Important for the parent grid */
+}
+
+/* The card itself */
+.post-item-card {
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+    transition: all 0.2s ease-in-out;
+    
+    /* The card is a flex column, with the image on top and content below */
+    display: flex;
+    flex-direction: column;
+}
+
+.post-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* --- The Image Section --- */
+.post-item-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background-color: var(--card-border);
+    flex-shrink: 0; /* Prevents the image from being squished */
+}
+
+.post-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.post-item-card:hover .post-item-image {
+    transform: scale(1.05);
+}
+
+
+/* --- THE CORRECTED CONTENT SECTION --- */
+
+/* 1. This is the container for ALL text content below the image */
+.post-item-content {
+    padding: 1.25rem;
+    flex-grow: 1; /* It will fill the remaining vertical space in the card */
+    
+    /* This makes its children (body and stats) align vertically */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 2. This is the div containing the title and author */
+.post-item-body {
+    flex-grow: 1; /* This is the KEY: it expands, pushing the stats down */
+}
+
+/* 3. The stats section now sits perfectly at the bottom */
+.post-stats {
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    color: var(--secondary-text-color);
+    flex-shrink: 0; /* Prevents this part from shrinking */
+}
+/* ------------------------------------ */
+
+
+/* --- Other text styles (unchanged) --- */
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.post-tag {
+    background-color: var(--tag-background);
+    color: var(--secondary-text-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.post-title {
+    color: var(--text-color);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0.5rem 0;
+}
+
+.post-meta {
+    color: var(--secondary-text-color);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.like-button, .comment-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--secondary-text-color);
+    padding: 0;
+}
+
+.like-button.liked svg {
+    color: #e53e3e;
+    fill: #e53e3e;
+}
