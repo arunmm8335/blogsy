@@ -60,7 +60,7 @@
 ## 📂 Project Structure
 
 The project is organized into a monorepo structure with separate directories for the `backend` and `frontend`, and Docker configuration at the root level.
-
+```
 /blogging-platform
 ├── .env                  # Root environment variables for Docker Compose (sensitive)
 ├── .gitignore            # Files and folders to be ignored by Git
@@ -93,7 +93,7 @@ The project is organized into a monorepo structure with separate directories for
         ├── hooks/        # Custom React hooks (useDebounce)
         ├── pages/        # Page-level components (HomePage, PostPage, etc.)
         └── services/     # API service functions (using Axios)
-
+```
 ---
 
 ## 🏁 Getting Started
