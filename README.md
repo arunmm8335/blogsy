@@ -1,36 +1,59 @@
 # Blogsy: Your Space to Speak
 
- <!-- Optional: Add a screenshot of your app later -->
-
 **Blogsy** is a modern, full-stack MERN blogging platform designed for writers and readers to share ideas and connect with a vibrant community. Built with a professional tech stack including React, Node.js, Express, and MongoDB, this application is containerized with Docker and optimized with Redis for high performance.
 
 ---
 
 ## ✨ Features
 
--   **Full CRUD Functionality:** Create, Read, Update, and Delete posts and comments.
--   **User Authentication:** Secure user registration and login using JWT (JSON Web Tokens).
--   **Rich Text Editor:** A "What You See Is What You Get" (WYSIWYG) editor for creating beautifully formatted blog posts.
--   **Media Uploads:** Seamlessly upload images and videos for posts and profile pictures, powered by Cloudinary.
--   **Advanced Search:** Powerful search functionality to find posts by title, content, tags, or author name.
--   **Interactive UI:** Like posts, reply to comments in nested threads, and view user profiles.
--e   **Professional Backend:** Rate limiting to prevent abuse, password reset functionality via email (Nodemailer), and Redis caching for high-performance reads.
--   **SEO Optimized:** Dynamic page titles and meta descriptions for better search engine visibility.
--   **Fully Containerized:** The entire application (frontend, backend, database, cache) is orchestrated with Docker and Docker Compose for consistent and scalable deployment.
--   **Responsive Design:** A beautiful and functional user interface that works on all devices.
+### User & Authentication
+-   **Secure JWT Authentication:** Stateful user sessions managed by secure, expiring JSON Web Tokens.
+-   **Password Hashing:** User passwords are never stored in plain text, thanks to `bcrypt`.
+-   **Full User Profiles:** Users can set their profile picture, bio, social media links, and other personal details.
+-   **Password Reset Flow:** A complete, secure "Forgot Password" functionality that sends a unique reset link via email using **Nodemailer**.
+
+### Content & Interaction
+-   **Full CRUD for Posts:** Authenticated users can create, read, update, and delete their own posts.
+-   **Rich Text Editor:** Utilizes **React Quill**, a powerful WYSIWYG editor, for creating beautifully formatted blog posts.
+-   **Cloud-Based Media Uploads:** Seamless image and video uploads for posts and profiles, handled by **Cloudinary**.
+-   **Dynamic Commenting System:** Users can comment on posts and reply to other comments in nested threads.
+-   **Post Likes:** Interactive "like" functionality on posts.
+
+### UI & UX
+-   **Responsive Design:** A beautiful and functional interface that works on all devices.
+-   **Dark/Light Theme Toggle:** A persistent, context-based theme switcher.
+-   **Live Search Suggestions:** An advanced search box with a debounced, live-updating suggestions dropdown.
+-   **Dedicated Search Page:** A full search page with advanced filtering and sorting (by relevance, date, or likes).
+-   **Professional UX Polish:**
+    -   **Toast Notifications:** Non-intrusive feedback via **React Hot Toast**.
+    -   **Skeleton Loaders:** Smooth loading states for content-heavy pages.
+    -   **Page Transitions:** Elegant fade-in animations between pages using **Framer Motion**.
+    -   **Reading Time & Progress Bar:** Blog posts display an estimated reading time and a scroll progress bar.
+
+### Backend & Performance
+-   **Redis Caching:** High-frequency read operations are cached with Redis to reduce database load and improve response times.
+-   **API Rate Limiting:** Protects the backend from spam and brute-force attacks.
+-   **SEO Optimized:** Dynamic page titles and meta descriptions are set on a per-page basis using `react-helmet-async`.
+
+### Deployment
+-   **Fully Containerized:** The entire stack (frontend, backend, database, cache) is orchestrated with **Docker and Docker Compose**.
+-   **Production-Ready Builds:** Multi-stage Dockerfiles create small, optimized, and secure images, with the frontend served by **Nginx**.
 
 ---
 
 ## 🚀 Tech Stack
 
--   **Frontend:** React, React Router, Axios, Framer Motion (for animations)
--   **Backend:** Node.js, Express.js
--   **Database:** MongoDB with Mongoose
--   **Authentication:** JSON Web Tokens (JWT), bcrypt
--   **Caching:** Redis
--   **File Uploads:** Cloudinary, Multer
--   **Containerization:** Docker, Docker Compose
--   **Email Service:** Nodemailer
+| Category          | Technology                                         |
+|-------------------|----------------------------------------------------|
+| **Frontend**      | React, React Router, Axios                         |
+| **Backend**       | Node.js, Express.js                                |
+| **Database**      | MongoDB (with Mongoose)                            |
+| **Containerization**| Docker, Docker Compose, Nginx                      |
+| **Caching**       | Redis                                              |
+| **Authentication**| JSON Web Tokens (JWT), bcrypt                      |
+| **File Uploads**  | Cloudinary, Multer                                 |
+| **UI & Animation**| Framer Motion, React Hot Toast, React Loading Skeleton |
+| **Email Service** | Nodemailer                                         |
 
 ---
 
@@ -40,77 +63,48 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/en/) (v18.x or later recommended)
+-   [Node.js](https://nodejs.org/en/) (v18.x or later)
 -   [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
--   A `.env` file in the root directory with the necessary credentials (see `.env.example` below).
+-   A Git client.
 
 ### Local Setup Instructions
 
-1.  **Clone the repository:**
+1.  **Clone the Repository:**
     ```bash
     git clone https://github.com/arunmm8335/blogsy.git
     cd blogsy
     ```
 
-2.  **Create the root `.env` file:**
-    Create a file named `.env` in the root of the project and add your credentials. Use the following as a template:
+2.  **Configure Environment Variables:**
+    Create a file named `.env` in the root of the project. This file holds all your secret keys. Copy the contents of the `.env.example` section below into this new file and fill in your actual credentials.
 
-    ```env
-    # .env
-
-    # JWT Secret Key (use a long, random string)
-    JWT_SECRET=your_super_secret_jwt_key
-
-    # Nodemailer Credentials (for password reset)
-    EMAIL_USER=your_email@gmail.com
-    EMAIL_PASS=your_16_character_google_app_password
-
-    # Cloudinary Credentials
-    CLOUDINARY_CLOUD_NAME=your_cloud_name
-    CLOUDINARY_API_KEY=your_api_key
-    CLOUDINARY_API_SECRET=your_api_secret
-    ```
-
-3.  **Run Local Dependencies (Optional, for IDE support):**
-    For the best developer experience with tools like ESLint and Prettier in your IDE, run `npm install` in both the `backend` and `frontend` directories.
-    ```bash
-    # In one terminal
-    cd backend && npm install
-
-    # In another terminal
-    cd frontend && npm install
-    ```
-
-4.  **Launch with Docker Compose:**
-    From the root directory, run the following command. This will build the images and start all the containers (`frontend`, `backend`, `mongodb`, `redis`).
+3.  **Launch with Docker Compose:**
+    From the root directory of the project, run the following command. This will build the production-ready images for all services and start the containers.
     ```bash
     docker-compose up --build
     ```
+    *(The first build may take several minutes. Subsequent builds will be much faster.)*
 
-5.  **Access the Application:**
-    -   Frontend (React App): **`http://localhost:3000`**
-    -   Backend API: **`http://localhost:5000`**
-
----
-
-## ⚙️ API Endpoints
-
-A brief overview of the main API routes available:
-
-| Method | Endpoint                    | Description                                  | Access   |
-|--------|-----------------------------|----------------------------------------------|----------|
-| `POST` | `/api/auth/register`        | Register a new user.                         | Public   |
-| `POST` | `/api/auth/login`           | Authenticate a user and get a token.         | Public   |
-| `POST` | `/api/auth/forgot-password` | Request a password reset email.              | Public   |
-| `GET`  | `/api/posts`                | Get all posts with pagination.               | Public   |
-| `POST` | `/api/posts`                | Create a new post.                           | Private  |
-| `GET`  | `/api/posts/:id`            | Get a single post by its ID.                 | Public   |
-| `PUT`  | `/api/posts/:id`            | Update a post.                               | Private  |
-| `PUT`  | `/api/users/me`             | Update the logged-in user's profile.         | Private  |
-| `GET`  | `/api/users/profile/:username` | Get a user's public profile and their posts. | Public   |
+4.  **Access the Application:**
+    -   **Frontend:** Open your browser and navigate to **`http://localhost:3000`**
+    -   **Backend API:** The API is accessible at `http://localhost:5000`
 
 ---
 
-## 🌟 Acknowledgements
+## ⚙️ Environment Configuration (`.env.example`)
 
-This project was a comprehensive learning journey into the MERN stack and modern web development practices. Thank you to everyone whose tutorials and documentation made this possible.
+Create a `.env` file in the project's root directory and add the following, replacing the placeholder values with your own keys.
+
+```env
+# A long, random, and secret string for signing JWTs
+JWT_SECRET=your_super_secret_jwt_key_that_is_long_and_random
+
+# Credentials for Nodemailer to send password reset emails
+# For Gmail, this requires enabling 2-Step Verification and creating an App Password.
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your16charactergoogleappword
+
+# Credentials for Cloudinary media storage
+CLOUDINARY_CLOUD_NAME=your_cloud_name_from_dashboard
+CLOUDINARY_API_KEY=your_api_key_from_dashboard
+CLOUDINARY_API_SECRET=your_api_secret_from_dashboard
