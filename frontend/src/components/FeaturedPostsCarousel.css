@@ -1,0 +1,104 @@
+/* In /src/components/FeaturedPostsCarousel.css */
+
+.featured-carousel-container {
+  margin-bottom: 2rem; /* Space between the carousel and the post grid */
+}
+
+.featured-carousel {
+  width: 100%;
+  height: 500px; /* A good height for a featured section */
+  border-radius: 12px;
+  overflow: hidden; /* Important for keeping slide content inside the rounded corners */
+}
+
+.featured-slide-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+.featured-slide-content {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end; /* Align content to the bottom */
+}
+
+.featured-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 100%);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.featured-tag {
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  align-self: flex-start; /* Position tag to the left */
+  margin-bottom: 0.5rem;
+}
+
+.featured-slide-title {
+  color: #ffffff;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  margin: 0;
+}
+
+.featured-slide-author {
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.5rem;
+}
+
+/* --- Style the Swiper UI Elements --- */
+/* This targets the variables Swiper uses for its UI */
+.featured-carousel {
+  --swiper-pagination-color: var(--primary-color);
+  --swiper-pagination-bullet-inactive-color: #ffffff;
+  --swiper-pagination-bullet-inactive-opacity: 0.5;
+  --swiper-navigation-color: #ffffff;
+  --swiper-navigation-size: 30px; /* A bit smaller arrows */
+}
+
+/* Add a subtle background to the navigation arrows for better visibility */
+.swiper-button-next,
+.swiper-button-prev {
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+
+/* Add these new styles */
+.featured-slide-media-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.featured-slide-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured-slide-overlay {
+  position: relative;
+  z-index: 2; /* Ensure text is on top of the media */
+}

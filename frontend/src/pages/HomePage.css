@@ -1,0 +1,50 @@
+/* In /src/pages/HomePage.css */
+
+.homepage-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2rem 4rem;
+  /* Generous padding for a premium feel */
+}
+
+@media (max-width: 768px) {
+  .homepage-container {
+    padding: 2rem 1.5rem;
+    /* Less padding on smaller screens */
+  }
+}
+
+/* The grid for regular posts */
+.posts-grid {
+  display: grid;
+  /* Responsive columns: starts at 1, goes to 2, then 3 on larger screens */
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.6rem;
+  margin-top: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: stretch;
+  /* Space below the featured post */
+}
+
+@media (min-width: 768px) {
+  .posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .posts-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.posts-grid a {
+  text-decoration: none;
+  /* Removes underline */
+  color: inherit;
+  /* Uses current text color */
+  cursor: pointer;
+  /* Stops pointer cursor if you want it to feel like text */
+}

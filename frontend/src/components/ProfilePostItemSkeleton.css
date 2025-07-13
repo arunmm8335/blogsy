@@ -1,0 +1,26 @@
+.skeleton {
+  pointer-events: none;
+}
+
+.skeleton-box {
+  background: linear-gradient(90deg, var(--card-background, #181818) 25%, var(--card-border, #232323) 50%, var(--card-background, #181818) 75%);
+  border-radius: 8px;
+  animation: skeleton-shimmer 1.2s infinite linear;
+  opacity: 0.7;
+}
+
+.post-item-card.skeleton {
+  max-width: 340px;
+  min-width: 220px;
+  width: 100%;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+
+  100% {
+    background-position: 200px 0;
+  }
+}

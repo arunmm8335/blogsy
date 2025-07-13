@@ -1,0 +1,32 @@
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px; /* More padding */
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary-text-color);
+  pointer-events: none; /* Allows clicks to go through to the input */
+}
+
+.search-input {
+  background-color: var(--background-color); /* Use theme variable */
+  border: 1px solid var(--card-border);       /* Use theme variable */
+  border-radius: 99px; /* Pill shape */
+  padding: 0.5rem 1rem 0.5rem 2.5rem; /* Adjusted padding for icon */
+  width: 220px;
+  font-size: 0.9rem;
+  color: var(--text-color); /* Use theme variable */
+  transition: all 0.2s ease-in-out;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-color-faded, rgba(99, 102, 241, 0.2));
+  width: 250px; /* Expand on focus */
+}

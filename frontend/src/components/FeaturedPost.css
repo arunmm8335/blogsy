@@ -1,0 +1,58 @@
+/* In /src/components/FeaturedPost.css */
+.featured-post-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 450px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+.featured-post-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.featured-post-card:hover .featured-post-image {
+  transform: scale(1.05);
+}
+
+.featured-post-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+}
+
+.featured-post-tag {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.featured-post-title {
+  font-size: 2.5rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.featured-post-author {
+  margin-top: 0.5rem;
+  opacity: 0.8;
+}
+

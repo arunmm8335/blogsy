@@ -1,0 +1,172 @@
+/* In /src/index.css */
+
+/* 1. Define Light Theme variables (with corrected high-contrast colors) */
+:root {
+  /* --- THE FIX IS HERE --- */
+  --background-color: #f4f5f7;
+  /* A very light, soft grey background */
+  --text-color: #1a202c;
+  /* A dark, readable charcoal for main text */
+  --card-background: #ffffff;
+  /* Pure white for cards to stand out */
+  --card-border: #e2e8f0;
+  /* A subtle light grey border */
+  --header-background: #ffffff;
+  /* White header */
+  --header-border: #e2e8f0;
+  /* Subtle border for the header */
+  --primary-color: #e65a3e;
+  /* Your brand's primary color (no change) */
+  --primary-hover-color: #d34f36;
+  /* Your brand's hover color (no change) */
+  --secondary-text-color: #718096;
+  /* A clear, medium grey for meta-data */
+  --button-text-color: #ffffff;
+  /* White text for buttons (no change) */
+  --tag-background: #edf2f7;
+  /* A light grey for tag backgrounds */
+  --link-color: #e65a3e;
+  /* Your brand color for links (no change) */
+  --glass-bg: rgba(255, 255, 255, 0.75);
+
+  /* Fonts (no change) */
+  --font-heading: 'Oswald', sans-serif;
+  --font-body: 'Noto Sans', sans-serif;
+}
+
+/* 2. Define Dark Theme variables (These are already good, no changes needed) */
+body.dark {
+  --background-color: #121212;
+  --text-color: #fff;
+  --card-background: #1e1e1e;
+  --card-border: #333333;
+  --header-background: #1e1e1e;
+  --header-border: #333333;
+  --primary-color: #e65a3e;
+  --primary-hover-color: #f06a52;
+  --secondary-text-color: #aaaaaa;
+  --button-text-color: #fff;
+  --tag-background: #333333;
+  --link-color: #f06a52;
+  --glass-bg: rgba(30, 30, 30, 0.85);
+}
+
+/* 3. Apply the variables to base elements (no changes needed) */
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.2s, color 0.2s;
+  font-family: var(--font-body);
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* 4. Solarized Theme */
+body.solarized {
+  --background-color: #fdf6e3;
+  --text-color: #657b83;
+  --card-background: #f5eecb;
+  --card-border: #eee8d5;
+  --header-background: #eee8d5;
+  --header-border: #d8cfa5;
+  --primary-color: #268bd2;
+  --primary-hover-color: #006dbe;
+  --secondary-text-color: #93a1a1;
+  --button-text-color: #222;
+  --tag-background: #e1dabd;
+  --link-color: #268bd2;
+}
+
+/* 5. Forest Theme */
+body.forest {
+  --background-color: #232e1f;
+  --text-color: #fff;
+  --card-background: #2e3d27;
+  --card-border: #3a4d32;
+  --header-background: #2e3d27;
+  --header-border: #3a4d32;
+  --primary-color: #4caf50;
+  --primary-hover-color: #388e3c;
+  --secondary-text-color: #b2cbb7;
+  --button-text-color: #fff;
+  --tag-background: #3a4d32;
+  --link-color: #81c784;
+  --glass-bg: rgba(30, 30, 30, 0.85);
+}
+
+/* 6. Ocean Theme */
+body.ocean {
+  --background-color: #e0f7fa;
+  --text-color: #01579b;
+  --card-background: #b3e5fc;
+  --card-border: #4fc3f7;
+  --header-background: #b3e5fc;
+  --header-border: #4fc3f7;
+  --primary-color: #0288d1;
+  --primary-hover-color: #01579b;
+  --secondary-text-color: #039be5;
+  --button-text-color: #1a202c;
+  --tag-background: #b3e5fc;
+  --link-color: #0288d1;
+}
+
+/* 7. Dracula Theme */
+body.dracula {
+  --background-color: #282a36;
+  --text-color: #f8f8f2;
+  --card-background: #44475a;
+  --card-border: #6272a4;
+  --header-background: #44475a;
+  --header-border: #6272a4;
+  --primary-color: #bd93f9;
+  --primary-hover-color: #ff79c6;
+  --secondary-text-color: #8be9fd;
+  --button-text-color: #fff;
+  --tag-background: #6272a4;
+  --link-color: #ff79c6;
+  --glass-bg: rgba(30, 30, 30, 0.85);
+}
+
+/* 8. Midnight Theme */
+body.midnight {
+  --background-color: #0d1117;
+  --text-color: #f8f8f2;
+  --card-background: #161b22;
+  --card-border: #21262d;
+  --header-background: #161b22;
+  --header-border: #21262d;
+  --primary-color: #58a6ff;
+  --primary-hover-color: #1f6feb;
+  --secondary-text-color: #8b949e;
+  --button-text-color: #fff;
+  --tag-background: #21262d;
+  --link-color: #58a6ff;
+  --glass-bg: rgba(30, 30, 30, 0.85);
+}

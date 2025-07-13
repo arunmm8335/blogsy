@@ -1,0 +1,52 @@
+# /docker-compose.yml
+
+services:
+  # The Backend Service (Node.js)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: blogsy-backend
+    ports:
+      - "5000:5000"
+    env_file: ./.env
+    environment:
+      # Connect to the 'mongodb' service on the Docker network
+      - MONGODB_URI=mongodb://mongodb:27017/blogsy-db
+    depends_on:
+      - mongodb
+    networks:
+      - blogsy-network
+
+  # The Frontend Service (React App served by Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: blogsy-frontend
+    ports:
+      # Map your local port 3000 to the container's Nginx port 80
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - blogsy-network
+
+  # The MongoDB Database Service
+  mongodb:
+    image: mongo:latest
+    container_name: blogsy-mongodb
+    volumes:
+      # This makes your database data persist across container restarts
+      - mongo-data:/data/db
+    networks:
+      - blogsy-network
+
+# Define the shared network for container communication
+networks:
+  blogsy-network:
+    driver: bridge
+
+# Define the named volume for persistent MongoDB data
+volumes:
+  mongo-data:

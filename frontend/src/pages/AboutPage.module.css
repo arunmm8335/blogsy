@@ -1,0 +1,198 @@
+/* In /src/pages/AboutPage.module.css */
+
+.wrapper {
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px) saturate(1.2);
+  border-radius: 18px;
+  border: 1.5px solid var(--card-border);
+  box-shadow: 0 8px 32px 0 rgba(60, 60, 90, 0.10), 0 1.5px 8px 0 rgba(60, 60, 90, 0.06);
+  overflow: hidden;
+  margin: 2.5rem 0;
+  position: relative;
+}
+
+.hero {
+  text-align: center;
+  padding: 5rem 1rem 3rem 1rem;
+  background: linear-gradient(120deg, var(--primary-color) 0%, var(--background-color) 100%);
+  color: var(--button-text-color);
+  border-bottom: 1.5px solid var(--card-border);
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 0.7rem;
+  letter-spacing: -1.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.hero p {
+  font-size: 1.35rem;
+  color: var(--button-text-color);
+  max-width: 650px;
+  margin: 0 auto;
+  opacity: 0.92;
+}
+
+.content {
+  padding: 3.5rem 3rem 2.5rem 3rem;
+  max-width: 850px;
+  margin: 0 auto;
+  line-height: 1.85;
+}
+
+.content h2 {
+  font-size: 2.1rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 2.5px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+  font-weight: 800;
+}
+
+/* --- NEW: Styles for the Creator Section --- */
+.creatorSection {
+  padding: 3.5rem 3rem 2.5rem 3rem;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.creatorSection h2 {
+  text-align: center;
+  font-size: 2.1rem;
+  margin-bottom: 2.2rem;
+  font-weight: 800;
+}
+
+.creatorCard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 24px 0 rgba(60, 60, 90, 0.10);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 2.5px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.creatorCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(120deg, var(--primary-color), var(--secondary-text-color));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.profilePicture {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--primary-color);
+  box-shadow: 0 2px 12px 0 rgba(60, 60, 90, 0.10);
+  z-index: 1;
+}
+
+.creatorInfo h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.creatorBio {
+  margin: 0 0 1.5rem 0;
+  color: var(--secondary-text-color);
+  font-size: 1.08rem;
+}
+
+.socials {
+  display: flex;
+  gap: 1.7rem;
+  z-index: 1;
+}
+
+.socials a {
+  color: var(--primary-color);
+  font-size: 1.7rem;
+  transition: color 0.2s, transform 0.2s;
+  background: rgba(230, 90, 62, 0.07);
+  border-radius: 50%;
+  padding: 0.4rem;
+}
+
+.socials a:hover {
+  color: var(--button-text-color);
+  background: var(--primary-color);
+  transform: translateY(-2px) scale(1.08);
+}
+
+/* Responsive adjustment for the creator card */
+@media (max-width: 600px) {
+  .creatorCard {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .profilePicture {
+    margin: 0 auto 1rem auto;
+  }
+
+  .socials {
+    justify-content: center;
+  }
+}
+
+.ctaSection {
+  text-align: center;
+  padding: 3.5rem 1rem 4.5rem 1rem;
+  background: linear-gradient(120deg, var(--background-color) 60%, var(--primary-color) 100%);
+}
+
+.ctaSection h2 {
+  font-size: 2.1rem;
+  margin-bottom: 1.2rem;
+  font-weight: 800;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background-color: var(--primary-color);
+  color: var(--button-text-color) !important;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  box-shadow: 0 2px 12px 0 rgba(230, 90, 62, 0.10);
+  transition: background-color 0.2s, transform 0.18s;
+  letter-spacing: 0.02em;
+}
+
+.ctaButton:hover {
+  background-color: var(--primary-hover-color);
+  text-decoration: none;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.hero,
+.ctaSection {
+  color: var(--button-text-color);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.content,
+.creatorSection {
+  color: var(--text-color);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}

@@ -1,0 +1,116 @@
+.post-item-card {
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    overflow: hidden;
+    height: 100%;
+    transition: box-shadow 0.25s cubic-bezier(.4, 2, .6, 1), transform 0.18s cubic-bezier(.4, 2, .6, 1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    max-width: 340px;
+    min-width: 220px;
+    width: 100%;
+}
+
+.post-item-card:hover {
+    transform: translateY(-10px) scale(1.025);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.18), 0 2px 12px rgba(0, 0, 0, 0.10);
+}
+
+.post-item-image-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: var(--card-border);
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.post-item-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s cubic-bezier(.4, 2, .6, 1);
+}
+
+.post-item-card:hover .post-item-image {
+    transform: scale(1.07) rotate(-0.5deg);
+}
+
+.post-item-content {
+    padding: 1.5rem 1.25rem 1.25rem 1.25rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.9rem;
+}
+
+.post-tag {
+    background-color: var(--tag-background);
+    color: var(--primary-color);
+    padding: 0.3rem 0.85rem;
+    border-radius: 99px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.post-title {
+    color: var(--text-color);
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin: 0.7rem 0 0.4rem 0;
+    letter-spacing: -0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.post-meta {
+    color: var(--secondary-text-color);
+    font-size: 0.93rem;
+    margin-top: 0.7rem;
+}
+
+.post-item-body {
+    flex-grow: 1;
+}
+
+.post-stats {
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    color: var(--secondary-text-color);
+    flex-shrink: 0;
+}
+
+.like-button,
+.comment-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--secondary-text-color);
+    padding: 0;
+}
+
+.like-button.liked svg {
+    color: #e53e3e;
+    fill: #e53e3e;
+}

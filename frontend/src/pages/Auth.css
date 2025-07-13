@@ -1,0 +1,292 @@
+/* --- Neon Card Login/Register Layout --- */
+
+body, #root, .auth-page-wrapper {
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.auth-page-wrapper {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7b2ff2 0%, #f357a8 100%);
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 950px;
+  min-height: 540px;
+  background: #181c2f;
+  border-radius: 2rem;
+  box-shadow: 0 10px 40px 0 rgba(60, 0, 100, 0.25), 0 1.5px 8px 0 rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- Top Nav Bar --- */
+.auth-card-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2.5rem 0.5rem 2.5rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.auth-card-nav .nav-logo {
+  font-weight: 900;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.auth-card-nav .nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+.auth-card-nav .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  font-weight: 500;
+}
+.auth-card-nav .nav-links a:hover {
+  opacity: 1;
+}
+.auth-card-nav .nav-signin {
+  background: #00e6fe;
+  color: #181c2f;
+  border-radius: 999px;
+  padding: 0.4rem 1.2rem;
+  font-weight: 700;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.auth-card-nav .nav-signin:hover {
+  background: #fff;
+  color: #7b2ff2;
+}
+
+/* --- Card Split --- */
+.auth-card-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.auth-card-left {
+  flex: 1.1;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  color: #fff;
+  position: relative;
+  z-index: 2;
+}
+.auth-card-logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 2.2rem;
+  letter-spacing: 1px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.auth-card-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7b2ff2 0%, #f357a8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2.2rem;
+  font-size: 2.5rem;
+  color: #fff;
+  box-shadow: 0 2px 12px 0 #7b2ff2aa;
+}
+.auth-card-form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.auth-card-form-group {
+  display: flex;
+  align-items: center;
+  background: #23284a;
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+  border: 1.5px solid #23284a;
+  transition: border 0.2s;
+}
+.auth-card-form-group:focus-within {
+  border: 1.5px solid #f357a8;
+}
+.auth-card-form-group input {
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 1rem;
+  flex: 1;
+  margin-left: 0.7rem;
+  padding: 0.2rem 0;
+}
+.auth-card-form-group input::placeholder {
+  color: #bdbddd;
+  opacity: 1;
+}
+.auth-card-btn {
+  width: 100%;
+  padding: 0.9rem 0;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f357a8 0%, #7b2ff2 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 12px 0 #f357a855;
+  transition: background 0.2s;
+}
+.auth-card-btn:hover {
+  background: linear-gradient(90deg, #7b2ff2 0%, #f357a8 100%);
+}
+.auth-card-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #bdbddd;
+  margin-bottom: 0.5rem;
+}
+.auth-card-options a {
+  color: #f357a8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.auth-card-options a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* --- Card Right Panel --- */
+.auth-card-right {
+  flex: 1.6;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: none;
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  overflow: hidden;
+}
+.auth-card-neon-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at 60% 40%, #7b2ff2 0%, #181c2f 60%, transparent 100%),
+              radial-gradient(circle at 40% 60%, #f357a8 0%, #181c2f 60%, transparent 100%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.auth-card-welcome {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  max-width: 400px;
+  margin-left: 2.5rem;
+}
+.auth-card-welcome-title {
+  font-size: 2.7rem;
+  font-weight: 800;
+  margin-bottom: 1.2rem;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.auth-card-welcome-desc {
+  font-size: 1.1rem;
+  color: #bdbddd;
+  margin-bottom: 2.2rem;
+}
+.auth-card-welcome-signup {
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+}
+.auth-card-welcome-signup a {
+  color: #00e6fe;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 0.3rem;
+  transition: color 0.2s;
+}
+.auth-card-welcome-signup a:hover {
+  color: #f357a8;
+  text-decoration: underline;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .auth-card {
+    flex-direction: column;
+    min-height: 0;
+    max-width: 98vw;
+  }
+  .auth-card-main {
+    flex-direction: column;
+  }
+  .auth-card-left, .auth-card-right {
+    width: 100%;
+    min-width: 0;
+    padding: 2rem 1rem;
+    border-radius: 0;
+  }
+  .auth-card-welcome {
+    margin-left: 0;
+    max-width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .auth-card {
+    border-radius: 0.7rem;
+    min-height: 0;
+  }
+  .auth-card-nav {
+    padding: 1rem 0.7rem 0.5rem 0.7rem;
+    font-size: 0.95rem;
+  }
+  .auth-card-left, .auth-card-right {
+    padding: 1rem 0.3rem;
+  }
+  .auth-card-welcome-title {
+    font-size: 1.5rem;
+  }
+}

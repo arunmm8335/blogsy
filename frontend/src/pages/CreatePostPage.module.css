@@ -1,0 +1,181 @@
+/* In /src/pages/CreatePostPage.module.css */
+
+.container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.panel {
+  background-color: var(--bg-panel);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.panel h1 {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* New Two-Column Layout */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr; /* Default to single column */
+  gap: 2.5rem;
+}
+
+/* Switch to two columns on larger screens */
+@media (min-width: 1024px) {
+  .formGrid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.formGroup input[type="text"],
+.editorContainer .ql-container {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--input-bg);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formGroup input[type="text"]:focus,
+.editorContainer .ql-container.ql-focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color) 20%, transparent);
+}
+
+/* Quill Editor Specifics */
+.editorContainer .ql-toolbar {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border: 1px solid var(--border-color);
+  border-bottom: 0;
+  background-color: var(--input-bg);
+}
+.editorContainer .ql-container {
+  min-height: 250px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+/* Polished Dropzone */
+.dropzone {
+  border: 2px dashed var(--border-color);
+  border-radius: 6px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+  background-color: var(--input-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+}
+
+.dropzoneActive {
+  border-color: var(--accent-color);
+  background-color: color-mix(in srgb, var(--accent-color) 5%, transparent);
+}
+
+.dropzoneIcon {
+  font-size: 2.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.dropzone p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Previews Grid */
+.previewsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.previewItem {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  aspect-ratio: 16 / 9;
+}
+
+.previewMedia {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.removeFileBtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.removeFileBtn:hover {
+  transform: scale(1.1);
+}
+
+/* Polished Publish Button */
+.publishBtn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.publishBtn:hover:not(:disabled) {
+  background-color: var(--accent-color-hover);
+  transform: translateY(-2px);
+}
+
+.publishBtn:disabled {
+  background-color: var(--text-secondary);
+  cursor: not-allowed;
+}

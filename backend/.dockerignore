@@ -1,0 +1,8 @@
+# /backend/.dockerignore
+
+# This prevents your massive local node_modules folder from being sent to the Docker daemon
+node_modules
+
+# Ignore other local files
+npm-debug.log
+.env

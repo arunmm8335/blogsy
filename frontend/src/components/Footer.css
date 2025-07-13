@@ -1,0 +1,41 @@
+/* In /src/components/Footer.css */
+.footer {
+  background-color: var(--card-background);
+  border-top: 1px solid var(--card-border);
+  width: 100%;
+  padding: 1.5rem 0;
+  margin-top: 3rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  color: var(--secondary-text-color);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.footer-socials {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-socials a {
+  color: var(--secondary-text-color);
+  font-size: 1.2rem;
+  transition: color 0.2s;
+}
+
+.footer-socials a:hover {
+  color: var(--primary-color);
+}
