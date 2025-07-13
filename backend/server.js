@@ -16,14 +16,16 @@ connectDB();
 const app = express();
 
 // CORS configuration
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? [process.env.FRONTEND_URL || 'https://your-frontend-domain.vercel.app'] // Will be updated with actual domain
-    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+   app.use(cors({
+     origin: [
+       'https://blogsy-m77px47an-roys-projects-55a11432.vercel.app', // your Vercel frontend
+       'http://localhost:3000',
+       'http://127.0.0.1:3000'
+     ],
+     credentials: true,
+     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+     allowedHeaders: ['Content-Type', 'Authorization']
+   }));
 app.use(express.json()); // To parse JSON bodies
 
 // Request logging middleware
