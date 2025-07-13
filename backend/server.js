@@ -16,16 +16,16 @@ connectDB();
 const app = express();
 
 // CORS configuration
-     app.use(cors({
-    origin: [
-      'https://blogsy-6tjv8xmxs-roys-projects-55a11432.vercel.app',
-      'http://localhost:3000',
-      'http://127.0.0.1:3000'
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
+   app.use(cors({
+     origin: [
+       'https://blogsy-g9pspuc6p-roys-projects-55a11432.vercel.app', // <-- your current Vercel domain
+       'http://localhost:3000',
+       'http://127.0.0.1:3000'
+     ],
+     credentials: true,
+     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+     allowedHeaders: ['Content-Type', 'Authorization']
+   }));
 app.use(express.json()); // To parse JSON bodies
 
 // Request logging middleware
