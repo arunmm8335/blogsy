@@ -54,12 +54,12 @@ const ProfilePostItem = ({ post: initialPost }) => {
                 </div>
                 <div className="post-stats">
                     <button onClick={handleLikeToggle} className={`like-button ${isLiked ? 'liked' : ''}`}>
-                        {isLiked ? <FaHeart color="#e53e3e" /> : <FaRegHeart />}
-                        <span>{post.likes.length}</span>
+                        {isLiked ? <FaHeart color="#e53e3e" size={18} /> : <FaRegHeart size={18} />}
                     </button>
+                    <span className="like-count" style={{ fontSize: '0.98rem', marginLeft: 0, marginRight: 0 }}>{post.likes.length}</span>
                     <div className="comment-info">
-                        <FaRegComment />
-                        <span>{post.commentCount || 0}</span>
+                        <FaRegComment size={18} />
+                        <span style={{ fontSize: '0.98rem', marginLeft: 4 }}>{post.commentCount || 0}</span>
                     </div>
                 </div>
             </div>
