@@ -1,12 +1,13 @@
 /* In /src/components/LikeButton.css */
-.like-button, .like-container {
+.like-button,
+.like-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   background: var(--tag-background);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 0.25rem 0.75rem;
+  border: 1.5px solid var(--card-border);
+  border-radius: 16px;
+  padding: 0.18rem 0.7rem;
   cursor: pointer;
   font-size: 0.8rem;
   transition: all 0.2s ease-in-out;
@@ -14,12 +15,13 @@
 
 .like-button:hover {
   background: var(--card-border);
+  border-color: var(--primary-color);
 }
 
 
 
 .like-count {
-    color: var(--secondary-text-color);
+  color: var(--secondary-text-color);
 }
 
 /* Style for when the post is liked */
@@ -27,9 +29,11 @@
   background-color: #ffebee;
   border-color: #ef5350;
 }
+
 .like-button.liked .like-icon {
   color: #ef5350;
 }
+
 .like-button.liked .like-count {
   color: #ef5350;
   font-weight: bold;
