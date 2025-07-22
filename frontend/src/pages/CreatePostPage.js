@@ -216,8 +216,8 @@ const CreatePostPage = () => {
             </div>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
               <button type="submit" className="publish-btn" disabled={loading} style={{ flex: 2 }}>
-                {loading ? 'Publishing...' : 'Publish Post'}
-              </button>
+              {loading ? 'Publishing...' : 'Publish Post'}
+            </button>
               <button 
                 type="button" 
                 onClick={saveAsDraft} 
