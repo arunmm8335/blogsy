@@ -113,80 +113,80 @@ const EditProfilePage = () => {
     const renderStep = () => {
         switch (step) {
             case 0:
-                return (
+    return (
                     <section style={{ marginBottom: '2rem' }}>
                         <h2>Profile Picture</h2>
-                        <div className="form-group">
-                            <div className="profile-picture-section">
-                                <img
-                                    src={preview || 'https://via.placeholder.com/150'}
-                                    alt="Profile preview"
-                                    className="profile-picture-preview"
-                                />
-                                <button type="button" className="btn" onClick={() => fileInputRef.current.click()}>
-                                    Change Picture
-                                </button>
-                                <input
-                                    type="file"
-                                    ref={fileInputRef}
-                                    onChange={handleFileChange}
-                                    style={{ display: 'none' }}
-                                    accept="image/*"
-                                />
-                            </div>
+                <div className="form-group">
+                    <div className="profile-picture-section">
+                        <img 
+                            src={preview || 'https://via.placeholder.com/150'} 
+                            alt="Profile preview" 
+                            className="profile-picture-preview"
+                        />
+                        <button type="button" className="btn" onClick={() => fileInputRef.current.click()}>
+                            Change Picture
+                        </button>
+                        <input 
+                            type="file" 
+                            ref={fileInputRef} 
+                            onChange={handleFileChange} 
+                            style={{ display: 'none' }} 
+                            accept="image/*" 
+                        />
+                    </div>
                             <small style={{ color: 'var(--secondary-text-color)' }}>Recommended: Square image, at least 200x200px.</small>
-                        </div>
+                </div>
                     </section>
                 );
             case 1:
                 return (
                     <section style={{ marginBottom: '2rem' }}>
                         <h2>Basic Info</h2>
-                        <div className="form-group">
-                            <label htmlFor="username">Username</label>
-                            <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input type="email" id="email" name="email" value={user.email || ''} readOnly />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="bio">Bio</label>
+                <div className="form-group">
+                    <label htmlFor="username">Username</label>
+                    <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required />
+                </div>
+                 <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input type="email" id="email" name="email" value={user.email || ''} readOnly />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="bio">Bio</label>
                             <textarea id="bio" name="bio" value={formData.bio} onChange={handleChange} placeholder="Tell us about yourself..." maxLength={200} />
                             <small style={{ color: 'var(--secondary-text-color)' }}>Max 200 characters.</small>
-                        </div>
+                </div>
                     </section>
                 );
             case 2:
                 return (
                     <section style={{ marginBottom: '2rem' }}>
                         <h2>Contact</h2>
-                        <div className="form-group">
-                            <label htmlFor="dob">Date of Birth</label>
-                            <input type="date" id="dob" name="dob" value={formData.dob} onChange={handleChange} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="mobile">Mobile Number</label>
-                            <input type="tel" id="mobile" name="mobile" value={formData.mobile} onChange={handleChange} placeholder="+1 (555) 555-5555" />
-                        </div>
+                <div className="form-group">
+                    <label htmlFor="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" value={formData.dob} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" name="mobile" value={formData.mobile} onChange={handleChange} placeholder="+1 (555) 555-5555" />
+                </div>
                     </section>
                 );
             case 3:
                 return (
                     <section style={{ marginBottom: '2rem' }}>
-                        <h2>Social Links</h2>
-                        <div className="form-group">
-                            <label htmlFor="twitter">Twitter URL</label>
-                            <input type="url" id="twitter" name="twitter" value={formData.twitter} onChange={handleChange} placeholder="https://twitter.com/..." />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="github">GitHub URL</label>
-                            <input type="url" id="github" name="github" value={formData.github} onChange={handleChange} placeholder="https://github.com/..." />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="linkedin">LinkedIn URL</label>
-                            <input type="url" id="linkedin" name="linkedin" value={formData.linkedin} onChange={handleChange} placeholder="https://linkedin.com/in/..." />
-                        </div>
+                <h2>Social Links</h2>
+                <div className="form-group">
+                    <label htmlFor="twitter">Twitter URL</label>
+                    <input type="url" id="twitter" name="twitter" value={formData.twitter} onChange={handleChange} placeholder="https://twitter.com/..." />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="github">GitHub URL</label>
+                    <input type="url" id="github" name="github" value={formData.github} onChange={handleChange} placeholder="https://github.com/..." />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="linkedin">LinkedIn URL</label>
+                    <input type="url" id="linkedin" name="linkedin" value={formData.linkedin} onChange={handleChange} placeholder="https://linkedin.com/in/..." />
+                </div>
                     </section>
                 );
             case 4:
@@ -248,9 +248,9 @@ const EditProfilePage = () => {
                             Next
                         </button>
                     ) : (
-                        <button type="submit" className="btn" disabled={loading}>
-                            {loading ? 'Saving...' : 'Save Changes'}
-                        </button>
+                    <button type="submit" className="btn" disabled={loading}>
+                        {loading ? 'Saving...' : 'Save Changes'}
+                    </button>
                     )}
                 </div>
             </form>
