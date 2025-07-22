@@ -20,6 +20,7 @@ const app = express();
      origin: [
        'https://blogsy-m8ngw79uh-roys-projects-55a11432.vercel.app', // <-- your current Vercel domain
         'https://blogsy-q7jo6xpb6-roys-projects-55a11432.vercel.app',
+        'https://blogsy-theta.vercel.app',
        'http://localhost:3000',
        'http://127.0.0.1:3000'
      ],
