@@ -1,33 +1,39 @@
 /* In /src/pages/CreatePostPage.module.css */
 
 .container {
-  max-width: 1100px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  max-width: 340px;
+  margin: 1.2rem auto;
+  padding: 0 0.2rem;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .panel {
   background-color: var(--bg-panel);
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px var(--shadow-color);
+  padding: 0.08rem 0.08rem;
+  border-radius: 22px;
+  box-shadow: 0 1px 2px var(--shadow-color);
   border: 1px solid var(--border-color);
   transition: background-color 0.3s, border-color 0.3s;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .panel h1 {
   text-align: center;
-  margin-bottom: 2.5rem;
-  font-size: 2rem;
+  margin-bottom: 0.08rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-primary);
+  border-radius: 14px;
 }
 
 /* New Two-Column Layout */
 .formGrid {
   display: grid;
-  grid-template-columns: 1fr; /* Default to single column */
-  gap: 2.5rem;
+  grid-template-columns: 1fr;
+  /* Default to single column */
+  gap: 0.05rem;
 }
 
 /* Switch to two columns on larger screens */
@@ -38,12 +44,12 @@
 }
 
 .formGroup {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.03rem;
 }
 
 .formGroup label {
   display: block;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.02rem;
   font-weight: 500;
   color: var(--text-secondary);
 }
@@ -51,12 +57,12 @@
 .formGroup input[type="text"],
 .editorContainer .ql-container {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.03rem 0.12rem;
   border: 1px solid var(--border-color);
   background-color: var(--input-bg);
-  border-radius: 6px;
+  border-radius: 14px;
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 0.83rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -69,23 +75,28 @@
 
 /* Quill Editor Specifics */
 .editorContainer .ql-toolbar {
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
   border: 1px solid var(--border-color);
   border-bottom: 0;
   background-color: var(--input-bg);
+  min-height: 0;
+  padding: 0.005rem 0.02rem;
 }
+
 .editorContainer .ql-container {
-  min-height: 250px;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  min-height: 12px;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  font-size: 0.83rem;
+  padding: 0.005rem 0.02rem;
 }
 
 /* Polished Dropzone */
 .dropzone {
   border: 2px dashed var(--border-color);
-  border-radius: 6px;
-  padding: 2rem;
+  border-radius: 14px;
+  padding: 0.01rem;
   text-align: center;
   cursor: pointer;
   transition: border-color 0.3s, background-color 0.3s;
@@ -94,7 +105,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 150px;
+  min-height: 4px;
 }
 
 .dropzoneActive {
@@ -103,7 +114,7 @@
 }
 
 .dropzoneIcon {
-  font-size: 2.5rem;
+  font-size: 0.6rem;
   color: var(--text-secondary);
   margin-bottom: 1rem;
 }
@@ -119,7 +130,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 0.01rem;
 }
 
 .previewItem {
@@ -152,6 +163,7 @@
   justify-content: center;
   transition: transform 0.2s;
 }
+
 .removeFileBtn:hover {
   transform: scale(1.1);
 }
@@ -159,10 +171,10 @@
 /* Polished Publish Button */
 .publishBtn {
   width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
+  padding: 0.03rem;
+  font-size: 0.81rem;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 14px;
   background-color: var(--accent-color);
   color: white;
   border: none;
