@@ -1,12 +1,15 @@
 /* In /src/components/Header.css */
 
 .header {
-  background-color: var(--card-background);
+  background: rgba(30, 30, 40, 0.85);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--card-border);
   position: sticky;
   top: 0;
   z-index: 1000;
   width: 100%;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+  border-radius: 0 0 18px 18px;
 }
 
 .header-content {
@@ -15,60 +18,74 @@
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0.75rem 2rem;
-  height: 64px;
+  padding: 0.45rem 1.1rem 0.45rem 1.1rem;
+  height: 52px;
+  border-radius: 0 0 12px 12px;
 }
 
 .logo {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.18rem;
   text-decoration: none;
   color: var(--text-color);
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .header-right-side {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.1rem;
 }
 
 /* Main site navigation (e.g., About, Create Post) */
 .main-nav {
   display: flex;
-  gap: 1.5rem;
+  gap: 0.7rem;
 }
 
 .main-nav a {
   text-decoration: none;
   color: var(--text-color);
   font-weight: 500;
-  transition: color 0.2s;
+  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+  padding: 0.22rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.97rem;
+  letter-spacing: 0.01em;
 }
 
 .main-nav a:hover,
 .main-nav a.active {
   color: var(--primary-color);
+  background: var(--tag-background);
+  box-shadow: 0 2px 8px rgba(230, 90, 62, 0.08);
 }
 
 /* User-specific actions (Login, Register, etc.) */
 .user-actions {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.7rem;
 }
 
 .user-actions a,
 .user-actions .logout-btn {
-  font-size: 0.9rem;
+  font-size: 0.93rem;
   text-decoration: none;
   color: var(--secondary-text-color);
-  transition: color 0.2s;
+  transition: color 0.2s, background 0.2s;
+  padding: 0.18rem 0.7rem;
+  border-radius: 999px;
+  background: none;
+  border: none;
 }
 
 .user-actions a:hover,
 .user-actions .logout-btn:hover {
-  color: var(--text-color);
+  color: var(--primary-color);
+  background: var(--tag-background);
 }
 
 .user-greeting {
@@ -81,18 +98,26 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 0.18rem 0.7rem;
   font-family: inherit;
   font-weight: 500;
+  border-radius: 999px;
 }
 
 .theme-switcher-dropdown {
-  margin-left: 1rem;
-  padding: 0.3rem 0.7rem;
-  border-radius: 6px;
-  border: 1px solid var(--card-border);
+  margin-left: 0.5rem;
+  padding: 0.18rem 0.7rem;
+  border-radius: 999px;
+  border: 1.2px solid var(--card-border);
   background: var(--card-background);
   color: var(--text-color);
+  font-size: 0.93rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: border 0.18s;
+}
+
+.theme-switcher-dropdown:focus {
+  border: 1.2px solid var(--primary-color);
 }
 
 
@@ -104,13 +129,15 @@
   align-items: center;
   justify-content: center;
   /* Add margin-left to push it slightly from the logout button */
-  margin-left: 0.5rem;
+  margin-left: 0.3rem;
+  border-radius: 50%;
+  transition: box-shadow 0.18s;
 }
 
 /* This styles both the <img> and the fallback <FaUserCircle> icon */
 .profile-avatar-icon {
-  width: 38px;
-  height: 38px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   /* Makes it a perfect circle */
   object-fit: cover;
@@ -126,6 +153,32 @@
 .profile-link:hover .profile-avatar-icon {
   transform: scale(1.08);
   border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(230, 90, 62, 0.10);
+}
+
+/* --- Hamburger menu base for mobile (future) --- */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--tag-background);
+  cursor: pointer;
+  border: none;
+  margin-left: 0.7rem;
+}
+
+.hamburger-menu span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--primary-color);
+  margin: 3px 0;
+  border-radius: 2px;
+  transition: all 0.2s;
 }
 
 /* --------------------------------------- */
