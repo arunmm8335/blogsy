@@ -39,36 +39,36 @@ const PostItem = ({ post: initialPost }) => {
     // --- THIS IS THE CRITICAL CHANGE ---
     // The link itself becomes the grid item, and the card inside is just a container.
     <Link to={`/posts/${post._id}`} className="post-item-card">
-      
-        <div className="post-item-image-wrapper">
-          <MediaPreview post={post} className="post-item-image" />
+
+      <div className="post-item-image-wrapper">
+        <MediaPreview post={post} className="post-item-image" />
+      </div>
+
+      <div className="post-item-content">
+        <div className="post-tags">
+          {(post.tags || []).slice(0, 2).map(tag => (
+            <span key={tag} className="post-tag">#{tag}</span>
+          ))}
         </div>
 
-        <div className="post-item-content">
-          <div className="post-tags">
-            {(post.tags || []).slice(0, 2).map(tag => (
-              <span key={tag} className="post-tag">#{tag}</span>
-            ))}
-          </div>
-          
-          <div className="post-item-body">
-            <h2 className="post-title">{post.title}</h2>
-            <p className="post-meta">
-              By {post.authorId?.username || 'Unknown'}
-            </p>
-          </div>
+        <div className="post-item-body">
+          <h2 className="post-title">{post.title}</h2>
+          <p className="post-meta">
+            By {post.authorId?.username || 'Unknown'}
+          </p>
+        </div>
 
-          <div className="post-stats">
-            <button onClick={handleLikeToggle} className={`like-button ${isLiked ? 'liked' : ''}`}>
-              {isLiked ? <FaHeart color="#e53e3e" /> : <FaRegHeart />}
-              <span>{post.likes.length}</span>
-            </button>
-            <div className="comment-info">
-              <FaRegComment />
-              <span>{post.commentCount || 0}</span>
-            </div>
+        <div className="post-stats">
+          <button onClick={handleLikeToggle} className={`like-button ${isLiked ? 'liked' : ''}`}>
+            {isLiked ? <FaHeart color="#e53e3e" size={18} /> : <FaRegHeart size={18} />}
+          </button>
+          <span className="like-count" style={{ fontSize: '0.98rem', marginLeft: 0, marginRight: 0 }}>{post.likes.length}</span>
+          <div className="comment-info">
+            <FaRegComment size={18} />
+            <span style={{ fontSize: '0.98rem', marginLeft: 4 }}>{post.commentCount || 0}</span>
           </div>
         </div>
+      </div>
 
     </Link>
     // ------------------------------------
