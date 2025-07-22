@@ -46,10 +46,20 @@ const DraftsPage = () => {
             try {
                 await deletePost(postId, user.token);
                 toast.success('Draft deleted successfully!');
-                fetchDrafts(); // Refresh the list
+                setDrafts(prev => prev.filter(d => d._id !== postId)); // Remove from UI
             } catch (error) {
-                toast.error('Failed to delete draft');
-                console.error('Error deleting draft:', error);
+                // If 404, remove from UI anyway
+                if (error.response && error.response.status === 404) {
+                    setDrafts(prev => prev.filter(d => d._id !== postId));
+                    toast('Draft already deleted.', { icon: '⚠️' });
+                } else {
+                    toast.error('Failed to delete draft');
+                }
+                if (error.response) {
+                    console.error('Error deleting draft:', error.response.data);
+                } else {
+                    console.error('Error deleting draft:', error.message || error);
+                }
             }
         }
     };
