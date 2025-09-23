@@ -1,14 +1,8 @@
 import Redis from 'ioredis';
 
-// Decide Redis connection
-// 1. If REDIS_URL exists (cloud deployment), use it
-// 2. Otherwise, fallback to local Redis (WSL / localhost)
-const redis = new Redis({
-  host: '127.0.0.1',
-  port: 6379,
-  family: 4, // force IPv4
-});
-
+const redis = process.env.REDIS_URL
+  ? new Redis(process.env.REDIS_URL, { family: 4 }) // cloud Redis
+  : new Redis({ host: '127.0.0.1', port: 6379, family: 4 }); // local Redis for dev
 
 // Event listeners
 redis.on('connect', () => {
