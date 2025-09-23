@@ -1,14 +1,25 @@
 import Redis from 'ioredis';
 
-// 🔒 Force local Redis (ignore REDIS_URL for now)
-const redis = new Redis({
-  host: '172.29.45.12',  // replace with your WSL IP
-  port: 6379,
-  maxRetriesPerRequest: 2,
-  connectTimeout: 5000,
-});
+// Decide Redis connection
+// 1. If REDIS_URL exists (cloud deployment), use it
+// 2. Otherwise, fallback to local Redis (WSL / localhost)
+const redis = process.env.REDIS_URL
+  ? new Redis(process.env.REDIS_URL) // cloud Redis
+  : new Redis({
+      host: '127.0.0.1', // or WSL IP for dev
+      port: 6379,
+      maxRetriesPerRequest: 2,
+      connectTimeout: 5000,
+    });
 
-redis.on('connect', () => console.log('✅ Redis connected to local instance!'));
+// Event listeners
+redis.on('connect', () => {
+  console.log(
+    process.env.REDIS_URL
+      ? '✅ Connected to cloud Redis!'
+      : '✅ Connected to local Redis!'
+  );
+});
 redis.on('error', (err) => console.error('❌ Redis error:', err));
 
 export const cacheService = {
