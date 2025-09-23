@@ -2,7 +2,7 @@ import Redis from 'ioredis';
 
 // 🔒 Force local Redis (ignore REDIS_URL for now)
 const redis = new Redis({
-  host: '127.0.0.1',   // or 'localhost'
+  host: '172.29.45.12',  // replace with your WSL IP
   port: 6379,
   maxRetriesPerRequest: 2,
   connectTimeout: 5000,
