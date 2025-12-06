@@ -238,19 +238,16 @@ export const getAllPosts = async (req, res) => {
     const cacheKey = `posts:list:page:${page}:limit:${limit}:sort:${sort}:tag:${tag || ''}:author:${author || ''}:status:${status}`;
 
     try {
-        // 1. Cache check — returns an object, NOT a string
         const cached = await cacheService.get(cacheKey);
         if (cached) {
             console.log('Cache hit:', cacheKey);
-            return res.json(cached); // NO JSON.parse()
+            return res.json(cached); // ✔ FIXED
         }
 
         console.log('Cache miss:', cacheKey);
-        console.log('Getting posts with query:', { page, limit, sort, tag, author, status });
 
         const query = {};
 
-        // Handle status filtering
         if (status === 'published') {
             query.$or = [
                 { status: 'published' },
@@ -260,7 +257,6 @@ export const getAllPosts = async (req, res) => {
             query.status = status;
         }
 
-        // Tag filter
         if (tag) {
             if (query.$or) {
                 query.$and = [
@@ -273,7 +269,6 @@ export const getAllPosts = async (req, res) => {
             }
         }
 
-        // Author filter
         if (author) {
             const user = await User.findOne({ username: author });
             if (user) {
@@ -292,32 +287,24 @@ export const getAllPosts = async (req, res) => {
             }
         }
 
-        console.log('Final query:', query);
-
         const posts = await Post.find(query)
             .populate('authorId', 'username profilePicture')
-            .limit(limit * 1)
+            .limit(limit)
             .skip((page - 1) * limit)
             .sort(sort);
 
-        console.log(`Found ${posts.length} posts`);
-
-        // Count query
-        const countQuery = JSON.parse(JSON.stringify(query));
-        const count = await Post.countDocuments(countQuery);
-        console.log(`Total count: ${count}`);
+        const count = await Post.countDocuments(query);
 
         const response = {
             posts,
-            page: parseInt(page),
+            page: Number(page),
             pages: Math.ceil(count / limit),
             total: count
         };
 
-        // 2. Cache it — store OBJECT, not string
-        await cacheService.set(cacheKey, response, 300);
+        await cacheService.set(cacheKey, response, 300); // ✔ FIXED
 
-        return res.json(response);
+        res.json(response);
 
     } catch (error) {
         console.error('Error in getAllPosts:', error);
@@ -333,7 +320,7 @@ export const getPostById = async (req, res) => {
         const cached = await cacheService.get(cacheKey);
         if (cached) {
             console.log('Cache hit:', cacheKey);
-            return res.json(cached); // NO JSON.parse()
+            return res.json(cached); // ✔ FIXED
         }
 
         console.log('Cache miss:', cacheKey);
@@ -344,17 +331,9 @@ export const getPostById = async (req, res) => {
             return res.status(404).json({ message: 'Post not found' });
         }
 
-        console.log('Found post:', {
-            id: post._id,
-            title: post.title,
-            status: post.status,
-            authorId: post.authorId
-        });
+        await cacheService.set(cacheKey, post, 600); // ✔ FIXED
 
-        // Cache for 10 minutes
-        await cacheService.set(cacheKey, post, 600);
-
-        return res.json(post);
+        res.json(post);
 
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });
@@ -393,7 +372,7 @@ export const getUserDrafts = async (req, res) => {
         const cached = await cacheService.get(cacheKey);
         if (cached) {
             console.log('Cache hit for drafts:', cacheKey);
-            return res.json(cached); // NO JSON.parse()
+            return res.json(cached); // ✔ FIXED
         }
 
         console.log('Cache miss for drafts:', cacheKey);
@@ -406,7 +385,7 @@ export const getUserDrafts = async (req, res) => {
         })
             .sort({ updatedAt: -1 })
             .skip(skip)
-            .limit(parseInt(limit))
+            .limit(Number(limit))
             .populate('authorId', 'username profilePicture');
 
         const total = await Post.countDocuments({
@@ -417,7 +396,7 @@ export const getUserDrafts = async (req, res) => {
         const result = {
             posts: drafts,
             pagination: {
-                currentPage: parseInt(page),
+                currentPage: Number(page),
                 totalPages: Math.ceil(total / limit),
                 totalPosts: total,
                 hasNextPage: page * limit < total,
@@ -425,8 +404,7 @@ export const getUserDrafts = async (req, res) => {
             }
         };
 
-        // Cache drafts for 5 minutes
-        await cacheService.set(cacheKey, result, 300);
+        await cacheService.set(cacheKey, result, 300); // ✔ FIXED
 
         res.json(result);
 
