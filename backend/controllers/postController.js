@@ -232,38 +232,37 @@ export const deletePost = async (req, res) => {
 
 // --- NO CHANGES NEEDED FOR THE FUNCTIONS BELOW ---
 
-// @desc    Get all posts with filtering, sorting, and pagination
 export const getAllPosts = async (req, res) => {
     const { page = 1, limit = 10, sort = '-createdAt', tag, author, status = 'published' } = req.query;
-    // --- Redis cache key ---
+
     const cacheKey = `posts:list:page:${page}:limit:${limit}:sort:${sort}:tag:${tag || ''}:author:${author || ''}:status:${status}`;
+
     try {
-        // 1. Try cache first
+        // 1. Cache check — returns an object, NOT a string
         const cached = await cacheService.get(cacheKey);
         if (cached) {
             console.log('Cache hit:', cacheKey);
-            return res.json(JSON.parse(cached));
+            return res.json(cached); // NO JSON.parse()
         }
-        console.log('Cache miss:', cacheKey);
 
+        console.log('Cache miss:', cacheKey);
         console.log('Getting posts with query:', { page, limit, sort, tag, author, status });
 
-        const query = {}; // Start with empty query
+        const query = {};
 
-        // Handle status filtering - include posts with specified status OR posts without status field (legacy posts)
+        // Handle status filtering
         if (status === 'published') {
             query.$or = [
                 { status: 'published' },
-                { status: { $exists: false } } // Include legacy posts that don't have status field
+                { status: { $exists: false } }
             ];
         } else {
-            query.status = status; // For drafts, only show posts with status: 'draft'
+            query.status = status;
         }
 
-        // Apply additional filters
+        // Tag filter
         if (tag) {
             if (query.$or) {
-                // If we have $or, we need to apply tag filter to both conditions
                 query.$and = [
                     { $or: query.$or },
                     { tags: tag }
@@ -274,11 +273,11 @@ export const getAllPosts = async (req, res) => {
             }
         }
 
+        // Author filter
         if (author) {
             const user = await User.findOne({ username: author });
             if (user) {
                 if (query.$or || query.$and) {
-                    // If we have complex query, add authorId to $and
                     if (!query.$and) query.$and = [];
                     if (query.$or) {
                         query.$and.push({ $or: query.$or });
@@ -297,99 +296,70 @@ export const getAllPosts = async (req, res) => {
 
         const posts = await Post.find(query)
             .populate('authorId', 'username profilePicture')
-            .limit(limit * 1).skip((page - 1) * limit).sort(sort);
+            .limit(limit * 1)
+            .skip((page - 1) * limit)
+            .sort(sort);
 
         console.log(`Found ${posts.length} posts`);
 
-        // Use the same query logic for counting
-        const countQuery = {};
-        if (status === 'published') {
-            countQuery.$or = [
-                { status: 'published' },
-                { status: { $exists: false } }
-            ];
-        } else {
-            countQuery.status = status;
-        }
-
-        // Apply additional filters to count query
-        if (tag) {
-            if (countQuery.$or) {
-                countQuery.$and = [
-                    { $or: countQuery.$or },
-                    { tags: tag }
-                ];
-                delete countQuery.$or;
-            } else {
-                countQuery.tags = tag;
-            }
-        }
-
-        if (author) {
-            const user = await User.findOne({ username: author });
-            if (user) {
-                if (countQuery.$or || countQuery.$and) {
-                    if (!countQuery.$and) countQuery.$and = [];
-                    if (countQuery.$or) {
-                        countQuery.$and.push({ $or: countQuery.$or });
-                        delete countQuery.$or;
-                    }
-                    countQuery.$and.push({ authorId: user._id });
-                } else {
-                    countQuery.authorId = user._id;
-                }
-            }
-        }
-
+        // Count query
+        const countQuery = JSON.parse(JSON.stringify(query));
         const count = await Post.countDocuments(countQuery);
         console.log(`Total count: ${count}`);
 
-        const response = { posts, page: parseInt(page), pages: Math.ceil(count / limit), total: count };
-        // 2. Store in cache for 5 minutes
-        await cacheService.set(cacheKey, JSON.stringify(response), 300);
-        res.json(response);
+        const response = {
+            posts,
+            page: parseInt(page),
+            pages: Math.ceil(count / limit),
+            total: count
+        };
+
+        // 2. Cache it — store OBJECT, not string
+        await cacheService.set(cacheKey, response, 300);
+
+        return res.json(response);
+
     } catch (error) {
         console.error('Error in getAllPosts:', error);
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 };
 
-// @desc    Get single post by ID
 export const getPostById = async (req, res) => {
     const { id } = req.params;
     const cacheKey = `posts:detail:${id}`;
 
     try {
-        // 1. Try cache first
         const cached = await cacheService.get(cacheKey);
         if (cached) {
             console.log('Cache hit:', cacheKey);
-            return res.json(JSON.parse(cached));
+            return res.json(cached); // NO JSON.parse()
         }
+
         console.log('Cache miss:', cacheKey);
 
-        console.log('Looking for post with ID:', req.params.id);
-        const post = await Post.findById(req.params.id).populate('authorId', 'username profilePicture');
-        console.log('Found post:', post ? 'Yes' : 'No');
-        if (post) {
-            console.log('Post details:', {
-                id: post._id,
-                title: post.title,
-                status: post.status,
-                authorId: post.authorId
-            });
-            // 2. Store in cache for 10 minutes
-            await cacheService.set(cacheKey, JSON.stringify(post), 600);
-            res.json(post);
-        } else {
-            console.log('Post not found with ID:', req.params.id);
-            res.status(404).json({ message: 'Post not found' });
+        const post = await Post.findById(id).populate('authorId', 'username profilePicture');
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
         }
+
+        console.log('Found post:', {
+            id: post._id,
+            title: post.title,
+            status: post.status,
+            authorId: post.authorId
+        });
+
+        // Cache for 10 minutes
+        await cacheService.set(cacheKey, post, 600);
+
+        return res.json(post);
+
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 };
-
 // @desc    Like/Unlike a post
 export const toggleLikePost = async (req, res) => {
     // This function works as is.
@@ -420,12 +390,12 @@ export const getUserDrafts = async (req, res) => {
     const cacheKey = `posts:drafts:${req.user._id}:page:${page}:limit:${limit}`;
 
     try {
-        // Try cache first
         const cached = await cacheService.get(cacheKey);
         if (cached) {
             console.log('Cache hit for drafts:', cacheKey);
-            return res.json(JSON.parse(cached));
+            return res.json(cached); // NO JSON.parse()
         }
+
         console.log('Cache miss for drafts:', cacheKey);
 
         const skip = (page - 1) * limit;
@@ -456,15 +426,15 @@ export const getUserDrafts = async (req, res) => {
         };
 
         // Cache drafts for 5 minutes
-        await cacheService.set(cacheKey, JSON.stringify(result), 300);
+        await cacheService.set(cacheKey, result, 300);
 
         res.json(result);
+
     } catch (error) {
         console.error("Error fetching drafts:", error);
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 };
-
 // @desc    Publish a draft
 // @route   PUT /api/posts/:id/publish
 // @access  Private (Author only)
