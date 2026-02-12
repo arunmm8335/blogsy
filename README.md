@@ -114,6 +114,8 @@ For common issues and solutions, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
 
 Planned features and future improvements are tracked in [FEATURES_ROADMAP.md](FEATURES_ROADMAP.md).
 
+System design recommendations are documented in [SYSTEM_DESIGN_IMPROVEMENTS.md](SYSTEM_DESIGN_IMPROVEMENTS.md).
+
 ---
 
 ## License
