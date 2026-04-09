@@ -3,40 +3,207 @@
 .homepage-container {
   width: 100%;
   box-sizing: border-box;
-  padding: 2rem 4rem;
-  /* Generous padding for a premium feel */
+  padding: 1.2rem 0.75rem 2.2rem;
 }
 
 @media (max-width: 768px) {
   .homepage-container {
-    padding: 2rem 1.5rem;
-    /* Less padding on smaller screens */
+    padding: 0.8rem 0.65rem 1.6rem;
   }
+}
+
+.posts-grid-title {
+  margin: 1.75rem auto 1rem;
+  text-align: center;
+  max-width: 1200px;
+  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.homepage-empty {
+  text-align: center;
+  color: var(--secondary-text-color);
+  padding: 2.4rem 1rem 2.8rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.homepage-caught-up {
+  text-align: center;
+  color: var(--secondary-text-color);
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 2.3rem 1rem 2.7rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.homepage-caught-up h3 {
+  margin: 0;
+  color: var(--text-color);
+  font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+}
+
+.homepage-caught-up p {
+  margin: 0.55rem auto 0;
+  max-width: 60ch;
+}
+
+.homepage-empty-state {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--card-border);
+  background: linear-gradient(145deg, rgba(255, 116, 76, 0.1), rgba(88, 166, 255, 0.06));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: clamp(1.15rem, 2.2vw, 1.75rem);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.empty-state-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.34rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--secondary-text-color);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.homepage-empty-state h3 {
+  margin: 0.9rem 0 0.4rem;
+  color: var(--text-color);
+  font-size: clamp(1.35rem, 3.5vw, 1.9rem);
+  line-height: 1.2;
+}
+
+.homepage-empty-state p {
+  margin: 0 auto;
+  max-width: 66ch;
+  color: var(--secondary-text-color);
+}
+
+.homepage-empty-actions {
+  margin-top: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.empty-action-primary,
+.empty-action-secondary {
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.empty-action-primary {
+  background: linear-gradient(120deg, #ff6a3d, #ff8e67 60%, #ff6a3d);
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(255, 116, 76, 0.28);
+}
+
+.empty-action-primary:hover {
+  transform: translateY(-1px);
+}
+
+.empty-action-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  border-color: var(--card-border);
+}
+
+.empty-action-secondary:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 116, 76, 0.45);
+}
+
+.empty-state-prompts {
+  margin-top: 1.2rem;
+  color: var(--secondary-text-color);
+}
+
+.empty-state-prompts>span {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.prompt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.48rem;
+  justify-content: center;
+}
+
+.prompt-chips span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-color);
+  padding: 0.38rem 0.66rem;
+  font-size: 0.8rem;
 }
 
 /* The grid for regular posts */
 .posts-grid {
   display: grid;
-  /* Responsive columns: starts at 1, goes to 2, then 3 on larger screens */
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1.6rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.3rem;
+  margin-top: 1rem;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   align-items: stretch;
-  /* Space below the featured post */
 }
 
 @media (min-width: 768px) {
   .posts-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 }
 
 @media (min-width: 1200px) {
   .posts-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 1.7rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .homepage-empty-state {
+    text-align: left;
+  }
+
+  .homepage-empty-actions {
+    justify-content: flex-start;
+  }
+
+  .prompt-chips {
+    justify-content: flex-start;
   }
 }
 

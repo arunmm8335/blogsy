@@ -1,54 +1,56 @@
-// In /src/pages/AboutPage.js
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
 import styles from './AboutPage.module.css';
-
-// --- STEP 1: Import your local image from the assets folder ---
-// Make sure the filename here matches the file you added.
-// For example, if your photo is named 'Arun.png', change it to:
-// import profilePic from '../assets/Arun.png';
-import profilePic from '../assets/my-photo.jpg'; 
+import profilePic from '../assets/my-photo.jpg';
 
 const AboutPage = () => {
+  const { user } = useAuth();
+
   return (
     <div className={styles.wrapper}>
       <section className={styles.hero}>
         <h1>About Blogsy</h1>
-        <p>Your Space to Speak, Share, and Discover.</p>
+        <p>A modern publishing space where ideas become conversations.</p>
       </section>
 
       <section className={styles.content}>
-        <h2>Our Mission</h2>
+        <h2>What Blogsy Is</h2>
         <p>
-          In a world cluttered with noise, we believe in the power of the individual voice. 
-          Blogsy was created to be a simple, elegant, and powerful platform for writers, thinkers, 
-          and creators to share their stories with the world.
+          Blogsy is a full-stack blogging platform built for writers who want a clean publishing
+          workflow and readers who want focused content without noise. Create posts, save drafts,
+          add media, and engage through comments and likes.
         </p>
 
-        <h2>Our Vision</h2>
+        <h2>What You Can Do Here</h2>
         <p>
-          We envision a more connected and empathetic world, driven by the open exchange of ideas.
-          Our goal is to build a community where diverse perspectives are celebrated.
+          Every account can publish stories, manage drafts, edit profile details, and build a
+          personal reading and writing rhythm. The platform is designed to stay fast, responsive,
+          and straightforward across desktop and mobile.
+        </p>
+
+        <h2>Current Direction</h2>
+        <p>
+          Blogsy is currently focused on quality writing tools and a polished dark-first experience.
+          The roadmap includes stronger discovery, richer social interactions, and broader community
+          features as more creators join.
         </p>
       </section>
 
       <section className={styles.creatorSection}>
         <h2>Meet the Creator</h2>
         <div className={styles.creatorCard}>
-          <img 
-            // --- STEP 2: Use the imported image variable ---
-            // React's build process handles the rest.
+          <img
             src={profilePic}
-            alt="Arun" 
-            className={styles.profilePicture} 
+            alt="Arun"
+            className={styles.profilePicture}
           />
           <div className={styles.creatorInfo}>
             <h3>Arun</h3>
             <p className={styles.creatorBio}>
-              Full-stack developer with a passion for building beautiful, functional, and user-centric web applications. 
-              This platform is a product of that passion, designed to be both a powerful tool and a joy to use.
+              Full-stack developer focused on building thoughtful products with clear UX and reliable
+              engineering. Blogsy is built to give creators a practical place to publish and grow.
             </p>
             <div className={styles.socials}>
               <a href="https://github.com/arunmm8335" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -66,8 +68,10 @@ const AboutPage = () => {
       </section>
 
       <section className={styles.ctaSection}>
-        <h2>Join the Conversation</h2>
-        <Link to="/register" className={styles.ctaButton}>Get Started</Link>
+        <h2>Ready to Publish?</h2>
+        <Link to={user ? '/posts/create' : '/register'} className={styles.ctaButton}>
+          {user ? 'Create Post' : 'Create Your Account'}
+        </Link>
       </section>
     </div>
   );

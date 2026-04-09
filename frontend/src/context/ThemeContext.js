@@ -1,28 +1,22 @@
 // In src/context/ThemeContext.js
-import React, { createContext, useState, useEffect, useContext, useMemo } from 'react';
+import React, { createContext, useEffect, useContext, useMemo } from 'react';
 
 const ThemeContext = createContext();
+const LOCKED_THEME = 'dark';
 
 export const ThemeProvider = ({ children }) => {
-  // 1. State to hold the current theme, defaulting to 'light'
-  // We check localStorage for a saved theme
-  const availableThemes = ['light', 'dark', 'solarized', 'forest', 'ocean', 'dracula', 'midnight'];
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme || 'light';
-  });
-
-  // 2. useEffect to apply the theme to the body and save to localStorage
+  // Keep a single visual system across the app.
   useEffect(() => {
-    // Add the theme class to the body element
     document.body.className = '';
-    document.body.classList.add(theme);
-    // Save the user's choice
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    document.body.classList.add(LOCKED_THEME);
+  }, []);
 
-  // useMemo to prevent unnecessary re-renders of the context value
-  const value = useMemo(() => ({ theme, setTheme, availableThemes }), [theme, availableThemes]);
+  const setTheme = () => { };
+
+  const value = useMemo(
+    () => ({ theme: LOCKED_THEME, setTheme, availableThemes: [LOCKED_THEME] }),
+    []
+  );
 
   return (
     <ThemeContext.Provider value={value}>
@@ -31,7 +25,6 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-// 4. Custom hook for easy access to the context
 export const useTheme = () => {
   return useContext(ThemeContext);
 };

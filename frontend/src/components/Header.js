@@ -1,14 +1,12 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import { FaUserCircle } from 'react-icons/fa';
 import SearchBox from './SearchBox';
 import './Header.css';
 
 const Header = () => {
   const { user, logout } = useAuth();
-  const { theme, setTheme, availableThemes } = useTheme();
   const navigate = useNavigate();
 
   const onLogout = () => {
@@ -31,21 +29,6 @@ const Header = () => {
             {user && <NavLink to="/posts/create">Create Post</NavLink>}
             {user && <NavLink to="/drafts">Drafts</NavLink>}
           </nav>
-
-          {/* --- THEME SWITCHER DROPDOWN --- */}
-          <select
-            className="theme-switcher-dropdown"
-            value={theme}
-            onChange={e => setTheme(e.target.value)}
-            style={{ marginLeft: '1rem', padding: '0.3rem 0.7rem', borderRadius: '6px', border: '1px solid var(--card-border)', background: 'var(--card-background)', color: 'var(--text-color)' }}
-            aria-label="Select theme"
-          >
-            {availableThemes.map(t => (
-              <option key={t} value={t}>
-                {t.charAt(0).toUpperCase() + t.slice(1)}
-              </option>
-            ))}
-          </select>
 
           <div className="user-actions">
             {user ? (

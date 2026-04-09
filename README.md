@@ -21,6 +21,7 @@ This project is a robust, full-featured blogging platform designed for modern co
 - **Search Functionality:** Quickly find posts by keywords
 - **Responsive Design:** Optimized for all devices
 - **Performance:** Caching with Redis for improved speed (optional)
+- **Event Streaming:** Kafka event publishing for async workflows (optional)
 
 ---
 
@@ -38,7 +39,7 @@ blogging-platform/
 
 - [Node.js](https://nodejs.org/) (v14 or higher)
 - [npm](https://www.npmjs.com/)
-- [MongoDB](https://www.mongodb.com/) (local or cloud instance)
+- [Supabase PostgreSQL](https://supabase.com/)
 - [Redis](https://redis.io/) (optional, for caching)
 
 ---
@@ -53,7 +54,10 @@ blogging-platform/
    npm install
    ```
 2. **Environment Configuration**
-   - Copy `.env.example` to `.env` and update the variables (MongoDB URI, JWT secret, etc.) as needed.
+   - Copy `.env.example` to `.env` and update the variables.
+   - Set `DB_PROVIDER=supabase`.
+   - Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
+   - Set `JWT_SECRET` for token signing.
 3. **Start the Server**
    ```bash
    npm start
@@ -82,8 +86,17 @@ blogging-platform/
 
 - **Backend:**
   - Refer to `backend/.env.example` for all required environment variables.
+   - To enable Kafka events, set `KAFKA_ENABLED=true` and provide `KAFKA_BROKERS`.
 - **Frontend:**
   - Ensure the API base URL is correctly set in `frontend/src/services/api.js` if you change backend ports or deploy separately.
+   - For direct media upload (faster than backend multer relay), set in `frontend/.env`:
+      - `REACT_APP_SUPABASE_URL`
+      - `REACT_APP_SUPABASE_ANON_KEY`
+      - `REACT_APP_SUPABASE_STORAGE_BUCKET` (default: `blogsy-media`)
+
+Media upload strategy:
+- If frontend Supabase env vars are configured, media uploads go directly to Supabase Storage and post APIs receive media URLs.
+- If not configured, the app falls back to existing backend multer + Cloudinary upload flow.
 
 ---
 
@@ -92,27 +105,46 @@ blogging-platform/
 ### Backend
 - `npm start` — Launches the production server
 - `npm run dev` — Starts the server with hot-reloading (nodemon)
+- `npm run worker:notifications` — Runs Kafka notifications consumer worker
+- `npm run worker:analytics` — Runs Kafka analytics consumer worker
 
 ### Frontend
 - `npm start` — Runs the React development server
 
 ---
 
-## Deployment
+## Migration Notes
 
-For deployment instructions, refer to [DEPLOYMENT.md](DEPLOYMENT.md).
-
----
-
-## Troubleshooting & Support
-
-For common issues and solutions, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md).
+Supabase migration and setup notes are available in `backend/SUPABASE_MIGRATION.md`.
 
 ---
 
-## Roadmap
+## Kafka Events (Optional)
 
-Planned features and future improvements are tracked in [FEATURES_ROADMAP.md](FEATURES_ROADMAP.md).
+The backend emits Kafka events for:
+- `user.registered`
+- `user.logged_in`
+- `post.created`
+
+Default topics:
+- Main topic: `blogsy.events`
+- Dead-letter topic: `blogsy.events.dlt`
+
+To run locally with Docker Compose:
+1. `docker compose up -d kafka zookeeper`
+2. Set `KAFKA_ENABLED=true` in `backend/.env`
+3. Start backend: `cd backend && npm start`
+4. Start worker: `cd backend && npm run worker:notifications`
+5. Start analytics worker: `cd backend && npm run worker:analytics`
+
+Analytics counters are tracked under cache keys like:
+- `analytics:events:total`
+- `analytics:events:type:<eventType>`
+- `analytics:events:daily:<YYYY-MM-DD>:total`
+- `analytics:events:daily:<YYYY-MM-DD>:type:<eventType>`
+
+Analytics API endpoint:
+- `GET /api/analytics/summary?date=YYYY-MM-DD` (requires auth token)
 
 ---
 
@@ -126,7 +158,7 @@ This project is licensed under the [MIT License](LICENSE). You are free to use, 
 
 - [Express](https://expressjs.com/) — Backend framework
 - [React](https://reactjs.org/) — Frontend library
-- [MongoDB](https://www.mongodb.com/) — Database
+- [Supabase](https://supabase.com/) — Database platform
 - [Redis](https://redis.io/) — Caching
 - [Quill.js](https://quilljs.com/) — Rich text editor
 

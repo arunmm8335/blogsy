@@ -13,8 +13,49 @@ services:
     environment:
       # Connect to the 'mongodb' service on the Docker network
       - MONGODB_URI=mongodb://mongodb:27017/blogsy-db
+      - KAFKA_ENABLED=true
+      - KAFKA_BROKERS=kafka:9092
+      - KAFKA_TOPIC=blogsy.events
+      - KAFKA_DLT_TOPIC=blogsy.events.dlt
     depends_on:
       - mongodb
+      - kafka
+    networks:
+      - blogsy-network
+
+  notifications-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: blogsy-notifications-worker
+    env_file: ./.env
+    environment:
+      - KAFKA_ENABLED=true
+      - KAFKA_BROKERS=kafka:9092
+      - KAFKA_TOPIC=blogsy.events
+      - KAFKA_DLT_TOPIC=blogsy.events.dlt
+      - KAFKA_NOTIFICATIONS_GROUP_ID=blogsy-notifications-group
+    command: [ "npm", "run", "worker:notifications" ]
+    depends_on:
+      - kafka
+    networks:
+      - blogsy-network
+
+  analytics-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: blogsy-analytics-worker
+    env_file: ./.env
+    environment:
+      - KAFKA_ENABLED=true
+      - KAFKA_BROKERS=kafka:9092
+      - KAFKA_TOPIC=blogsy.events
+      - KAFKA_DLT_TOPIC=blogsy.events.dlt
+      - KAFKA_ANALYTICS_GROUP_ID=blogsy-analytics-group
+    command: [ "npm", "run", "worker:analytics" ]
+    depends_on:
+      - kafka
     networks:
       - blogsy-network
 
@@ -39,6 +80,34 @@ services:
     volumes:
       # This makes your database data persist across container restarts
       - mongo-data:/data/db
+    networks:
+      - blogsy-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: blogsy-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - blogsy-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: blogsy-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
     networks:
       - blogsy-network
 

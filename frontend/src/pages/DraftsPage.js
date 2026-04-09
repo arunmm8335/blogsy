@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { fetchUserDrafts, publishDraft, deletePost } from '../services/api';
 import toast from 'react-hot-toast';
 import { FiEdit, FiTrash2, FiEye, FiClock } from 'react-icons/fi';
+import './DraftsPage.css';
 
 const DraftsPage = () => {
     const [drafts, setDrafts] = useState([]);
@@ -80,122 +81,57 @@ const DraftsPage = () => {
     };
 
     if (loading) {
-        return (
-            <div style={{
-                maxWidth: '1200px',
-                margin: '2rem auto',
-                padding: '0 1rem',
-                textAlign: 'center',
-                color: 'var(--text-color)'
-            }}>
-                <div>Loading drafts...</div>
-            </div>
-        );
+        return <div className="drafts-loading">Loading drafts...</div>;
     }
 
     return (
-        <div style={{
-            maxWidth: '1200px',
-            margin: '2rem auto',
-            padding: '0 1rem',
-            color: 'var(--text-color)'
-        }}>
-            <div style={{
-                background: 'var(--card-background)',
-                borderRadius: '12px',
-                padding: '2rem',
-                border: '1px solid var(--card-border)',
-                marginBottom: '2rem'
-            }}>
-                <h1 style={{
-                    fontSize: '2rem',
-                    fontWeight: '700',
-                    marginBottom: '0.5rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem'
-                }}>
+        <div className="drafts-page">
+            <div className="drafts-shell">
+                <h1 className="drafts-title">
                     <FiClock size={24} />
                     My Drafts
                 </h1>
-                <p style={{ color: 'var(--secondary-text-color)', marginBottom: '2rem' }}>
+                <p className="drafts-subtitle">
                     Manage your unpublished posts and drafts
                 </p>
 
                 {drafts.length === 0 ? (
-                    <div style={{
-                        textAlign: 'center',
-                        padding: '3rem',
-                        color: 'var(--secondary-text-color)'
-                    }}>
-                        <FiClock size={48} style={{ marginBottom: '1rem', opacity: 0.5 }} />
+                    <div className="drafts-empty">
+                        <FiClock size={48} className="drafts-empty-icon" />
                         <h3>No drafts yet</h3>
                         <p>Start writing to create your first draft!</p>
-                        <Link to="/posts/create" style={{
-                            display: 'inline-block',
-                            marginTop: '1rem',
-                            padding: '0.75rem 1.5rem',
-                            backgroundColor: 'var(--primary-color)',
-                            color: 'var(--button-text-color)',
-                            textDecoration: 'none',
-                            borderRadius: '6px',
-                            fontWeight: '600'
-                        }}>
+                        <Link to="/posts/create" className="drafts-create-btn">
                             Create New Post
                         </Link>
                     </div>
                 ) : (
-                    <div style={{ display: 'grid', gap: '1.5rem' }}>
+                    <div className="drafts-grid">
                         {drafts.map((draft) => (
-                            <div key={draft._id} style={{
-                                border: '1px solid var(--card-border)',
-                                borderRadius: '8px',
-                                padding: '1.5rem',
-                                background: 'var(--background-color)'
-                            }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                                    <div style={{ flex: 1 }}>
-                                        <h3 style={{
-                                            fontSize: '1.25rem',
-                                            fontWeight: '600',
-                                            marginBottom: '0.5rem',
-                                            color: 'var(--text-color)'
-                                        }}>
+                            <article key={draft._id} className="draft-card">
+                                <div className="draft-card-main">
+                                    <div>
+                                        <h3 className="draft-card-title">
                                             {draft.title}
                                         </h3>
-                                        <p style={{
-                                            color: 'var(--secondary-text-color)',
-                                            marginBottom: '1rem',
-                                            lineHeight: '1.6'
-                                        }}>
+                                        <p className="draft-card-excerpt">
                                             {truncateText(draft.content.replace(/<[^>]*>/g, ''))}
                                         </p>
-                                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                                            <span style={{
-                                                fontSize: '0.875rem',
-                                                color: 'var(--secondary-text-color)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '0.25rem'
-                                            }}>
+
+                                        <div className="draft-card-meta">
+                                            <span className="draft-updated">
                                                 <FiClock size={14} />
                                                 Last updated: {formatDate(draft.updatedAt)}
                                             </span>
+
                                             {draft.tags && draft.tags.length > 0 && (
-                                                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                                <div className="draft-tags">
                                                     {draft.tags.slice(0, 3).map((tag, index) => (
-                                                        <span key={index} style={{
-                                                            background: 'var(--tag-background)',
-                                                            color: 'var(--primary-color)',
-                                                            padding: '0.25rem 0.5rem',
-                                                            borderRadius: '12px',
-                                                            fontSize: '0.75rem'
-                                                        }}>
+                                                        <span key={index}>
                                                             #{tag}
                                                         </span>
                                                     ))}
                                                     {draft.tags.length > 3 && (
-                                                        <span style={{ color: 'var(--secondary-text-color)', fontSize: '0.75rem' }}>
+                                                        <span className="draft-tags-more">
                                                             +{draft.tags.length - 3} more
                                                         </span>
                                                     )}
@@ -203,108 +139,53 @@ const DraftsPage = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div style={{ display: 'flex', gap: '0.5rem', flexDirection: 'column' }}>
+
+                                    <div className="draft-card-actions">
                                         <Link
                                             to={`/posts/${draft._id}/edit`}
-                                            style={{
-                                                padding: '0.5rem',
-                                                background: 'var(--primary-color)',
-                                                color: 'var(--button-text-color)',
-                                                borderRadius: '6px',
-                                                textDecoration: 'none',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '0.25rem',
-                                                fontSize: '0.875rem'
-                                            }}
+                                            className="draft-action-btn"
                                         >
                                             <FiEdit size={14} />
                                             Edit
                                         </Link>
                                         <button
                                             onClick={() => handlePublish(draft._id)}
-                                            style={{
-                                                padding: '0.5rem',
-                                                background: '#10b981',
-                                                color: 'white',
-                                                border: 'none',
-                                                borderRadius: '6px',
-                                                cursor: 'pointer',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '0.25rem',
-                                                fontSize: '0.875rem'
-                                            }}
+                                            className="draft-action-btn publish"
                                         >
                                             <FiEye size={14} />
                                             Publish
                                         </button>
                                         <button
                                             onClick={() => handleDelete(draft._id)}
-                                            style={{
-                                                padding: '0.5rem',
-                                                background: '#ef4444',
-                                                color: 'white',
-                                                border: 'none',
-                                                borderRadius: '6px',
-                                                cursor: 'pointer',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '0.25rem',
-                                                fontSize: '0.875rem'
-                                            }}
+                                            className="draft-action-btn danger"
                                         >
                                             <FiTrash2 size={14} />
                                             Delete
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </article>
                         ))}
                     </div>
                 )}
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        marginTop: '2rem'
-                    }}>
+                    <div className="drafts-pagination">
                         <button
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                             disabled={currentPage === 1}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                background: currentPage === 1 ? 'var(--secondary-text-color)' : 'var(--primary-color)',
-                                color: 'var(--button-text-color)',
-                                border: 'none',
-                                borderRadius: '6px',
-                                cursor: currentPage === 1 ? 'not-allowed' : 'pointer'
-                            }}
+                            className="drafts-pagination-btn"
                         >
                             Previous
                         </button>
-                        <span style={{
-                            padding: '0.5rem 1rem',
-                            color: 'var(--text-color)',
-                            display: 'flex',
-                            alignItems: 'center'
-                        }}>
+                        <span className="drafts-pagination-info">
                             Page {currentPage} of {totalPages}
                         </span>
                         <button
                             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                             disabled={currentPage === totalPages}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                background: currentPage === totalPages ? 'var(--secondary-text-color)' : 'var(--primary-color)',
-                                color: 'var(--button-text-color)',
-                                border: 'none',
-                                borderRadius: '6px',
-                                cursor: currentPage === totalPages ? 'not-allowed' : 'pointer'
-                            }}
+                            className="drafts-pagination-btn"
                         >
                             Next
                         </button>

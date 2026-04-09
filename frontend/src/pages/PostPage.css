@@ -1,33 +1,269 @@
-/* In src/components/Pagination.css */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-    padding: 0;
-    margin-top: 3rem;
-    gap: 0.5rem;
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6a3d, #ff8e67 60%, #58a6ff);
+    transform-origin: 0%;
+    z-index: 2000;
 }
 
-.page-item .page-link {
-    background: var(--card-background);
+.post-reader-shell {
+    width: min(1100px, 100%);
+    margin: 1.3rem auto 2.6rem;
+    padding: 0 0.7rem;
+}
+
+.post-reader-card,
+.comments-section {
+    border-radius: 18px;
     border: 1px solid var(--card-border);
-    color: var(--secondary-text);
-    min-width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s ease;
+    background: var(--glass-bg);
+    box-shadow: var(--shadow-soft);
+    padding: clamp(1rem, 2.2vw, 1.7rem);
 }
 
-.page-item.active .page-link,
-.page-item .page-link:hover {
-    background-color: var(--primary-color);
-    color: var(--button-text-color);
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
+.comments-section {
+    margin-top: 1rem;
+}
+
+.post-actions {
+    margin-bottom: 0.9rem;
+    display: flex;
+    gap: 0.55rem;
+}
+
+.post-action-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 0.5rem 0.84rem;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(120deg, #ff6a3d, #ff8e67 60%, #ff6a3d);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.post-action-btn.danger {
+    background: linear-gradient(120deg, #d23f4f, #ef5567);
+}
+
+.post-header {
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 0.9rem;
+    margin-bottom: 0.95rem;
+}
+
+.post-page-title {
+    margin: 0;
+    color: var(--text-color);
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 4vw, 2.85rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.post-page-details {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+}
+
+.post-page-meta {
+    margin: 0;
+    color: var(--secondary-text-color);
+    font-size: 0.95rem;
+}
+
+.post-page-meta a {
+    color: var(--text-color);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.post-page-meta a:hover {
+    text-decoration: underline;
+}
+
+.reading-time {
+    color: var(--secondary-text-color);
+    font-style: italic;
+}
+
+.post-media-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.72rem;
+}
+
+.post-media-cell {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.03);
+    min-height: 220px;
+}
+
+.post-media-cell.hero {
+    grid-column: 1 / -1;
+    min-height: 370px;
+}
+
+.post-media-item {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.post-cover-wrapper {
+    margin-top: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+}
+
+.post-cover-image {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    display: block;
+}
+
+.post-no-media {
+    margin-top: 1rem;
+    border: 1px dashed var(--card-border);
+    color: var(--secondary-text-color);
+    border-radius: 12px;
+    padding: 0.8rem;
+    text-align: center;
+    font-size: 0.88rem;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.post-page-content {
+    margin-top: 1.2rem;
+    color: var(--text-color);
+    line-height: 1.78;
+    font-size: 1.04rem;
+}
+
+.post-page-content > * {
+    max-width: 100%;
+}
+
+.post-page-content h2,
+.post-page-content h3,
+.post-page-content h4 {
+    font-family: var(--font-heading);
+    line-height: 1.28;
+    margin-top: 1.35rem;
+    margin-bottom: 0.6rem;
+}
+
+.post-page-content blockquote {
+    margin: 1.1rem 0;
+    padding: 0.6rem 0.9rem;
+    border-left: 3px solid rgba(255, 116, 76, 0.68);
+    color: var(--secondary-text-color);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+}
+
+.post-tags-section {
+    margin-top: 1.15rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+}
+
+.post-tag-badge {
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    background: var(--tag-background);
+    color: var(--primary-color);
+    padding: 0.23rem 0.64rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.comments-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin-bottom: 0.95rem;
+}
+
+.comments-title {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.28rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.46rem;
+}
+
+.comments-count {
+    border-radius: 999px;
+    background: linear-gradient(120deg, #ff6a3d, #ff8e67 60%, #ff6a3d);
+    color: #fff;
+    font-size: 0.82rem;
+    padding: 0.14rem 0.56rem;
+    font-weight: 700;
+}
+
+.comments-sort-dropdown {
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    padding: 0.42rem 0.7rem;
+}
+
+.login-prompt {
+    color: var(--secondary-text-color);
+    margin: 0.7rem 0 0;
+}
+
+.login-prompt a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.comments-list {
+    margin-top: 1rem;
+}
+
+.no-comments {
+    margin: 1rem 0 0;
+    color: var(--secondary-text-color);
+}
+
+@media (max-width: 860px) {
+    .post-page-details {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .post-media-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .post-media-cell.hero {
+        min-height: 250px;
+    }
+
+    .comments-header-row {
+        flex-wrap: wrap;
+    }
+
+    .comments-sort-dropdown {
+        width: 100%;
+    }
 }

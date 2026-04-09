@@ -1,26 +1,41 @@
-// Script to diagnose and fix user authentication issues
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import User from '../models/User.js';
-import bcrypt from 'bcryptjs';
+import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+        auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+        },
+    }
+);
+
 const fixUserIssue = async () => {
     try {
-        // Connect to MongoDB
-        await mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-
-        console.log('Connected to MongoDB');
+        console.log('Connected to Supabase');
 
         // 1. List all users to see what's in the database
         console.log('\n📋 All users in database:');
-        const allUsers = await User.find({}).select('username email createdAt');
+        const { data: allUsers, error: usersError } = await supabase
+            .from('users')
+            .select('id, username, email, created_at')
+            .order('created_at', { ascending: true });
+
+        if (usersError) {
+            throw usersError;
+        }
+
+        if (!allUsers || allUsers.length === 0) {
+            console.log('No users found.');
+            return;
+        }
+
         allUsers.forEach((user, index) => {
-            console.log(`${index + 1}. Username: "${user.username}" | Email: "${user.email}" | Created: ${user.createdAt}`);
+            console.log(`${index + 1}. Username: "${user.username}" | Email: "${user.email}" | Created: ${user.created_at}`);
         });
 
         // 2. Check for duplicate emails (case insensitive)
@@ -65,9 +80,6 @@ const fixUserIssue = async () => {
 
     } catch (error) {
         console.error('Error:', error);
-    } finally {
-        await mongoose.disconnect();
-        console.log('\nDisconnected from MongoDB');
     }
 };
 

@@ -1,0 +1,220 @@
+.drafts-page {
+  width: min(1200px, 100%);
+  margin: 1.3rem auto 2.4rem;
+  padding: 0 0.7rem;
+  color: var(--text-color);
+}
+
+.drafts-shell {
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  background: var(--glass-bg);
+  box-shadow: var(--shadow-soft);
+  padding: 1.2rem;
+}
+
+.drafts-title {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.drafts-subtitle {
+  margin: 0.45rem 0 1.1rem;
+  color: var(--secondary-text-color);
+}
+
+.drafts-loading {
+  width: min(1200px, 100%);
+  margin: 2rem auto;
+  padding: 0 0.7rem;
+  text-align: center;
+  color: var(--secondary-text-color);
+}
+
+.drafts-empty {
+  text-align: center;
+  padding: 2.4rem 1rem;
+  color: var(--secondary-text-color);
+  border-radius: 12px;
+  border: 1px dashed var(--card-border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.drafts-empty-icon {
+  margin-bottom: 0.8rem;
+  opacity: 0.7;
+}
+
+.drafts-empty h3 {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.drafts-empty p {
+  margin: 0.5rem 0 0;
+}
+
+.drafts-create-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  border-radius: 10px;
+  padding: 0.62rem 1rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(120deg, #ff6a3d, #ff8e67 60%, #ff6a3d);
+}
+
+.drafts-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.draft-card {
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 0.95rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.draft-card-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.draft-card-title {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  color: var(--text-color);
+}
+
+.draft-card-excerpt {
+  margin: 0.45rem 0 0;
+  color: var(--secondary-text-color);
+  line-height: 1.62;
+}
+
+.draft-card-meta {
+  margin-top: 0.7rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.draft-updated {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.83rem;
+  color: var(--secondary-text-color);
+}
+
+.draft-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+}
+
+.draft-tags span {
+  display: inline-flex;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: var(--tag-background);
+  color: var(--primary-color);
+  padding: 0.18rem 0.55rem;
+  font-size: 0.76rem;
+}
+
+.draft-tags .draft-tags-more {
+  border: none;
+  background: transparent;
+  color: var(--secondary-text-color);
+  padding: 0;
+}
+
+.draft-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.draft-action-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.42rem 0.62rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(120deg, #ff6a3d, #ff8e67 60%, #ff6a3d);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.draft-action-btn.publish {
+  background: linear-gradient(120deg, #16a36f, #1dbb80);
+}
+
+.draft-action-btn.danger {
+  background: linear-gradient(120deg, #d23f4f, #ef5567);
+}
+
+.drafts-pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.drafts-pagination-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.42rem 0.72rem;
+  color: #fff;
+  background: linear-gradient(120deg, #ff6a3d, #ff8e67 60%, #ff6a3d);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.drafts-pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.drafts-pagination-info {
+  color: var(--secondary-text-color);
+  font-size: 0.86rem;
+}
+
+@media (max-width: 760px) {
+  .draft-card-main {
+    flex-direction: column;
+  }
+
+  .draft-card-actions {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .draft-action-btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 108px;
+  }
+
+  .drafts-pagination {
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,315 @@
+.edit-post-page {
+  width: min(1200px, 100%);
+  margin: 1.2rem auto 2.4rem;
+  padding: 0 0.7rem;
+}
+
+.edit-post-header {
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(140deg, rgba(255, 116, 76, 0.1), rgba(88, 166, 255, 0.05));
+  box-shadow: var(--shadow-soft);
+  padding: 1.1rem;
+}
+
+.edit-post-header h1 {
+  margin: 0;
+  color: var(--text-color);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.edit-post-header p {
+  margin: 0.4rem 0 0;
+  color: var(--secondary-text-color);
+}
+
+.edit-post-stats {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.48rem;
+}
+
+.edit-post-stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--secondary-text-color);
+  padding: 0.3rem 0.62rem;
+  font-size: 0.8rem;
+}
+
+.edit-post-form {
+  margin-top: 1rem;
+}
+
+.edit-post-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.edit-post-main-card,
+.edit-post-side-card {
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  background: var(--glass-bg);
+  box-shadow: var(--shadow-soft);
+  padding: 1rem;
+}
+
+.edit-post-side-card {
+  height: fit-content;
+}
+
+.edit-post-field {
+  margin-bottom: 1rem;
+}
+
+.edit-post-field:last-child {
+  margin-bottom: 0;
+}
+
+.edit-post-field label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--text-color);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.edit-post-field small {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--secondary-text-color);
+  font-size: 0.78rem;
+}
+
+.edit-post-field input,
+.edit-post-field select {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-color);
+  padding: 0.68rem 0.82rem;
+  font-size: 0.95rem;
+}
+
+.edit-post-field input:focus,
+.edit-post-field select:focus {
+  outline: none;
+  border-color: rgba(255, 116, 76, 0.68);
+  box-shadow: 0 0 0 3px rgba(255, 116, 76, 0.16);
+}
+
+.editor-container .ql-toolbar {
+  border: 1px solid var(--card-border);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.editor-container .ql-container {
+  border: 1px solid var(--card-border);
+  border-radius: 0 0 10px 10px;
+  min-height: 300px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-color);
+}
+
+.editor-container .ql-editor {
+  min-height: 250px;
+}
+
+.editor-container .ql-snow .ql-stroke {
+  stroke: var(--secondary-text-color);
+}
+
+.editor-container .ql-snow .ql-fill {
+  fill: var(--secondary-text-color);
+}
+
+.editor-container .ql-snow .ql-picker {
+  color: var(--secondary-text-color);
+}
+
+.dropzone {
+  border: 1.5px dashed var(--card-border);
+  border-radius: 12px;
+  min-height: 132px;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.dropzone-active {
+  border-color: rgba(255, 116, 76, 0.75);
+  background: rgba(255, 116, 76, 0.1);
+}
+
+.dropzone-icon {
+  font-size: 1.8rem;
+  color: var(--secondary-text-color);
+  margin-bottom: 0.4rem;
+}
+
+.dropzone p {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.dropzone small {
+  margin-top: 0.35rem;
+  color: var(--secondary-text-color);
+  font-size: 0.75rem;
+}
+
+.edit-post-tag-list {
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.025);
+  padding: 0.42rem;
+  display: flex;
+  gap: 0.36rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.edit-post-tag-list p {
+  margin: 0;
+  color: var(--secondary-text-color);
+  font-size: 0.82rem;
+}
+
+.edit-post-tag-list span {
+  display: inline-flex;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: var(--tag-background);
+  color: var(--primary-color);
+  padding: 0.22rem 0.55rem;
+  font-size: 0.78rem;
+}
+
+.previews-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 0.55rem;
+}
+
+.preview-item {
+  position: relative;
+  border-radius: 9px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  aspect-ratio: 16 / 10;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.preview-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-audio {
+  width: 100%;
+  margin-top: 28%;
+}
+
+.preview-file-name {
+  font-size: 0.74rem;
+  color: var(--secondary-text-color);
+  padding: 0.52rem;
+  line-height: 1.35;
+}
+
+.remove-file-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  cursor: pointer;
+}
+
+.edit-post-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+
+.update-btn,
+.cancel-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 0.62rem 0.92rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.update-btn {
+  background: linear-gradient(120deg, #ff6a3d, #ff8e67 60%, #ff6a3d);
+  color: #fff;
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-color);
+}
+
+.update-btn:disabled,
+.cancel-btn:disabled {
+  opacity: 0.66;
+  cursor: not-allowed;
+}
+
+@media (min-width: 1024px) {
+  .edit-post-grid {
+    grid-template-columns: minmax(0, 2.1fr) minmax(280px, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .edit-post-page {
+    padding: 0 0.5rem;
+  }
+
+  .edit-post-main-card,
+  .edit-post-side-card {
+    padding: 0.82rem;
+  }
+
+  .edit-post-actions {
+    flex-direction: column;
+  }
+
+  .update-btn,
+  .cancel-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

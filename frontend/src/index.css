@@ -1,73 +1,191 @@
-/* In /src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-/* 1. Define Light Theme variables (with corrected high-contrast colors) */
 :root {
-  /* --- THE FIX IS HERE --- */
-  --background-color: #f4f5f7;
-  /* A very light, soft grey background */
-  --text-color: #1a202c;
-  /* A dark, readable charcoal for main text */
-  --card-background: #ffffff;
-  /* Pure white for cards to stand out */
-  --card-border: #e2e8f0;
-  /* A subtle light grey border */
-  --header-background: #ffffff;
-  /* White header */
-  --header-border: #e2e8f0;
-  /* Subtle border for the header */
-  --primary-color: #e65a3e;
-  /* Your brand's primary color (no change) */
-  --primary-hover-color: #d34f36;
-  /* Your brand's hover color (no change) */
-  --secondary-text-color: #718096;
-  /* A clear, medium grey for meta-data */
+  --background-color: #f4f6fb;
+  --surface-color: #ffffff;
+  --text-color: #101828;
+  --secondary-text-color: #5f6c85;
+  --card-background: rgba(255, 255, 255, 0.68);
+  --card-border: rgba(148, 163, 184, 0.35);
+  --header-background: rgba(255, 255, 255, 0.74);
+  --header-border: rgba(148, 163, 184, 0.35);
+  --primary-color: #ff6a3d;
+  --primary-hover-color: #ef5b31;
   --button-text-color: #ffffff;
-  /* White text for buttons (no change) */
-  --tag-background: #edf2f7;
-  /* A light grey for tag backgrounds */
-  --link-color: #e65a3e;
-  /* Your brand color for links (no change) */
-  --glass-bg: rgba(255, 255, 255, 0.75);
-
-  /* Fonts (no change) */
-  --font-heading: 'Oswald', sans-serif;
-  --font-body: 'Noto Sans', sans-serif;
+  --tag-background: rgba(255, 106, 61, 0.14);
+  --link-color: #ff6a3d;
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.1);
+  --shadow-strong: 0 18px 44px rgba(15, 23, 42, 0.18);
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --font-heading: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+  --global-bg-image: url('./assets/background.jpg');
+  --global-bg-image-opacity: 0.22;
+  --global-bg-vignette: rgba(7, 10, 18, 0.36);
 }
 
-/* 2. Define Dark Theme variables (These are already good, no changes needed) */
 body.dark {
-  --background-color: #121212;
-  --text-color: #fff;
-  --card-background: #1e1e1e;
-  --card-border: #333333;
-  --header-background: #1e1e1e;
-  --header-border: #333333;
-  --primary-color: #e65a3e;
-  --primary-hover-color: #f06a52;
-  --secondary-text-color: #aaaaaa;
-  --button-text-color: #fff;
-  --tag-background: #333333;
-  --link-color: #f06a52;
-  --glass-bg: rgba(30, 30, 30, 0.85);
+  --background-color: #090b12;
+  --surface-color: #0d1019;
+  --text-color: #eaf0ff;
+  --secondary-text-color: #a6b1c9;
+  --card-background: rgba(15, 20, 32, 0.62);
+  --card-border: rgba(122, 135, 160, 0.28);
+  --header-background: rgba(14, 18, 29, 0.7);
+  --header-border: rgba(122, 135, 160, 0.28);
+  --primary-color: #ff744c;
+  --primary-hover-color: #ff8865;
+  --button-text-color: #ffffff;
+  --tag-background: rgba(255, 116, 76, 0.2);
+  --link-color: #ff8f70;
+  --glass-bg: rgba(15, 20, 32, 0.58);
+  --shadow-soft: 0 12px 34px rgba(0, 0, 0, 0.35);
+  --shadow-strong: 0 24px 54px rgba(0, 0, 0, 0.5);
+  --global-bg-image-opacity: 0.24;
+  --global-bg-vignette: rgba(4, 7, 14, 0.56);
 }
 
-/* 3. Apply the variables to base elements (no changes needed) */
+body.solarized {
+  --background-color: #fdf6e3;
+  --surface-color: #f8f1da;
+  --text-color: #5a6a71;
+  --secondary-text-color: #7d8e95;
+  --card-background: rgba(245, 238, 203, 0.82);
+  --card-border: rgba(186, 169, 115, 0.34);
+  --header-background: rgba(245, 238, 203, 0.78);
+  --header-border: rgba(186, 169, 115, 0.34);
+  --primary-color: #268bd2;
+  --primary-hover-color: #0f79c5;
+  --button-text-color: #ffffff;
+  --tag-background: rgba(38, 139, 210, 0.15);
+  --link-color: #268bd2;
+  --glass-bg: rgba(245, 238, 203, 0.72);
+}
+
+body.forest {
+  --background-color: #172319;
+  --surface-color: #1f2d22;
+  --text-color: #e9f5ea;
+  --secondary-text-color: #bdd5c0;
+  --card-background: rgba(33, 47, 37, 0.68);
+  --card-border: rgba(121, 156, 126, 0.3);
+  --header-background: rgba(31, 45, 34, 0.74);
+  --header-border: rgba(121, 156, 126, 0.3);
+  --primary-color: #4caf50;
+  --primary-hover-color: #5bc65f;
+  --button-text-color: #ffffff;
+  --tag-background: rgba(76, 175, 80, 0.2);
+  --link-color: #8dd892;
+  --glass-bg: rgba(33, 47, 37, 0.6);
+}
+
+body.ocean {
+  --background-color: #e0f7fa;
+  --surface-color: #c7ecf4;
+  --text-color: #004f70;
+  --secondary-text-color: #2f6d82;
+  --card-background: rgba(186, 235, 247, 0.76);
+  --card-border: rgba(3, 155, 229, 0.27);
+  --header-background: rgba(186, 235, 247, 0.8);
+  --header-border: rgba(3, 155, 229, 0.27);
+  --primary-color: #0288d1;
+  --primary-hover-color: #0270ad;
+  --button-text-color: #ffffff;
+  --tag-background: rgba(2, 136, 209, 0.14);
+  --link-color: #0288d1;
+  --glass-bg: rgba(186, 235, 247, 0.72);
+}
+
+body.dracula {
+  --background-color: #282a36;
+  --surface-color: #32364a;
+  --text-color: #f8f8f2;
+  --secondary-text-color: #b4c4ff;
+  --card-background: rgba(68, 71, 90, 0.68);
+  --card-border: rgba(151, 167, 233, 0.28);
+  --header-background: rgba(68, 71, 90, 0.72);
+  --header-border: rgba(151, 167, 233, 0.28);
+  --primary-color: #ff79c6;
+  --primary-hover-color: #ff95d3;
+  --button-text-color: #ffffff;
+  --tag-background: rgba(255, 121, 198, 0.2);
+  --link-color: #ff95d3;
+  --glass-bg: rgba(68, 71, 90, 0.62);
+}
+
+body.midnight {
+  --background-color: #0d1117;
+  --surface-color: #161b22;
+  --text-color: #edf3ff;
+  --secondary-text-color: #9fb0c5;
+  --card-background: rgba(22, 27, 34, 0.7);
+  --card-border: rgba(113, 128, 150, 0.28);
+  --header-background: rgba(22, 27, 34, 0.78);
+  --header-border: rgba(113, 128, 150, 0.28);
+  --primary-color: #58a6ff;
+  --primary-hover-color: #7cb8ff;
+  --button-text-color: #ffffff;
+  --tag-background: rgba(88, 166, 255, 0.22);
+  --link-color: #84c2ff;
+  --glass-bg: rgba(22, 27, 34, 0.64);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(1200px 560px at 14% -10%, rgba(255, 116, 76, 0.12), transparent 60%),
+    radial-gradient(900px 460px at 88% 0%, rgba(73, 128, 255, 0.14), transparent 56%),
+    var(--background-color);
   color: var(--text-color);
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.24s ease, color 0.24s ease;
   font-family: var(--font-body);
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+body::before {
+  z-index: -2;
+  background-image: var(--global-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: var(--global-bg-image-opacity);
+  transform: scale(1.03);
+}
+
+body::after {
+  z-index: -1;
+  background:
+    radial-gradient(1200px 700px at 12% -15%, rgba(255, 116, 76, 0.2), transparent 58%),
+    radial-gradient(1000px 640px at 92% 0%, rgba(88, 166, 255, 0.2), transparent 56%),
+    linear-gradient(180deg, transparent 0%, var(--global-bg-vignette) 100%);
 }
 
 a {
   color: var(--link-color);
-  text-decoration: none;
-}
-
-a:hover {
   text-decoration: none;
 }
 
@@ -78,95 +196,39 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  margin-top: 0;
+}
+
+p {
+  line-height: 1.65;
 }
 
 .page-container {
   width: 100%;
-  max-width: 1024px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
-  box-sizing: border-box;
+  padding: 0 1.25rem;
 }
 
-/* 4. Solarized Theme */
-body.solarized {
-  --background-color: #fdf6e3;
-  --text-color: #657b83;
-  --card-background: #f5eecb;
-  --card-border: #eee8d5;
-  --header-background: #eee8d5;
-  --header-border: #d8cfa5;
-  --primary-color: #268bd2;
-  --primary-hover-color: #006dbe;
-  --secondary-text-color: #93a1a1;
-  --button-text-color: #222;
-  --tag-background: #e1dabd;
-  --link-color: #268bd2;
+::selection {
+  background: var(--primary-color);
+  color: var(--button-text-color);
 }
 
-/* 5. Forest Theme */
-body.forest {
-  --background-color: #232e1f;
-  --text-color: #fff;
-  --card-background: #2e3d27;
-  --card-border: #3a4d32;
-  --header-background: #2e3d27;
-  --header-border: #3a4d32;
-  --primary-color: #4caf50;
-  --primary-hover-color: #388e3c;
-  --secondary-text-color: #b2cbb7;
-  --button-text-color: #fff;
-  --tag-background: #3a4d32;
-  --link-color: #81c784;
-  --glass-bg: rgba(30, 30, 30, 0.85);
+::-webkit-scrollbar {
+  width: 10px;
 }
 
-/* 6. Ocean Theme */
-body.ocean {
-  --background-color: #e0f7fa;
-  --text-color: #01579b;
-  --card-background: #b3e5fc;
-  --card-border: #4fc3f7;
-  --header-background: #b3e5fc;
-  --header-border: #4fc3f7;
-  --primary-color: #0288d1;
-  --primary-hover-color: #01579b;
-  --secondary-text-color: #039be5;
-  --button-text-color: #1a202c;
-  --tag-background: #b3e5fc;
-  --link-color: #0288d1;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-/* 7. Dracula Theme */
-body.dracula {
-  --background-color: #282a36;
-  --text-color: #f8f8f2;
-  --card-background: #44475a;
-  --card-border: #6272a4;
-  --header-background: #44475a;
-  --header-border: #6272a4;
-  --primary-color: #bd93f9;
-  --primary-hover-color: #ff79c6;
-  --secondary-text-color: #8be9fd;
-  --button-text-color: #fff;
-  --tag-background: #6272a4;
-  --link-color: #ff79c6;
-  --glass-bg: rgba(30, 30, 30, 0.85);
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 139, 161, 0.45);
+  border-radius: 999px;
 }
 
-/* 8. Midnight Theme */
-body.midnight {
-  --background-color: #0d1117;
-  --text-color: #f8f8f2;
-  --card-background: #161b22;
-  --card-border: #21262d;
-  --header-background: #161b22;
-  --header-border: #21262d;
-  --primary-color: #58a6ff;
-  --primary-hover-color: #1f6feb;
-  --secondary-text-color: #8b949e;
-  --button-text-color: #fff;
-  --tag-background: #21262d;
-  --link-color: #58a6ff;
-  --glass-bg: rgba(30, 30, 30, 0.85);
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 139, 161, 0.7);
 }

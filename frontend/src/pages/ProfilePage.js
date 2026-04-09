@@ -38,21 +38,31 @@ const ProfilePage = () => {
         getProfileData();
     }, [getProfileData]);
 
-    if (loading) return (
-        <div className="profile-page-container">
-            <div className="profile-container">
-                <aside className="profile-card" style={{ opacity: 0.5 }} />
-                <main className="profile-posts">
-                    <h2>Posts by ...</h2>
-                    <div className="profile-posts-list">
-                        {[1, 2, 3].map(i => <ProfilePostItemSkeleton key={i} />)}
-                    </div>
-                </main>
+    if (loading) {
+        return (
+            <div className="profile-page-container">
+                <div className="profile-container">
+                    <aside className="profile-card profile-card-loading" />
+                    <main className="profile-posts-shell">
+                        <section className="profile-featured-card">
+                            <h2>Loading posts...</h2>
+                        </section>
+                        <div className="profile-posts-list">
+                            {[1, 2, 3].map((i) => <ProfilePostItemSkeleton key={i} />)}
+                        </div>
+                    </main>
+                </div>
             </div>
-        </div>
-    );
-    if (error) return <p style={{ textAlign: 'center', padding: '4rem', color: 'red' }}>{error}</p>;
-    if (!profileData || !profileData.user) return <p style={{ textAlign: 'center', padding: '4rem' }}>User not found.</p>;
+        );
+    }
+
+    if (error) {
+        return <p className="profile-page-feedback error">{error}</p>;
+    }
+
+    if (!profileData || !profileData.user) {
+        return <p className="profile-page-feedback">User not found.</p>;
+    }
 
     const { user, posts } = profileData;
     const isOwnProfile = loggedInUser?._id === user._id;
@@ -60,6 +70,16 @@ const ProfilePage = () => {
     // Split posts for carousel and grid
     const carouselPosts = posts.slice(0, 3);
     const gridPosts = posts.slice(3);
+    const totalLikes = posts.reduce((sum, post) => sum + (post.likes?.length || 0), 0);
+
+    const formatSocialHandle = (url = '', fallback) => {
+        try {
+            const parsed = new URL(url);
+            return parsed.pathname.replace(/^\//, '') || fallback;
+        } catch (e) {
+            return fallback;
+        }
+    };
 
     return (
         <div className="profile-page-container">
@@ -70,44 +90,79 @@ const ProfilePage = () => {
                         src={user.profilePicture || `https://ui-avatars.com/api/?name=${user.username}&background=random`}
                         alt={`${user.username}'s profile`}
                     />
+                    <span className="profile-kicker">Profile</span>
                     <h1>{user.username}</h1>
                     <p className="profile-bio">{user.bio || 'No bio available.'}</p>
-                    <div className="profile-socials">
-                        {user.socialLinks?.twitter && <a href={user.socialLinks.twitter} target="_blank" rel="noopener noreferrer"><FaTwitter size="24" /></a>}
-                        {user.socialLinks?.github && <a href={user.socialLinks.github} target="_blank" rel="noopener noreferrer"><FaGithub size="24" /></a>}
-                        {user.socialLinks?.linkedin && <a href={user.socialLinks.linkedin} target="_blank" rel="noopener noreferrer"><FaLinkedin size="24" /></a>}
+
+                    <div className="profile-metrics">
+                        <div>
+                            <strong>{posts.length}</strong>
+                            <span>Posts</span>
+                        </div>
+                        <div>
+                            <strong>{totalLikes}</strong>
+                            <span>Likes</span>
+                        </div>
                     </div>
+
+                    <div className="profile-socials">
+                        {user.socialLinks?.twitter && (
+                            <a href={user.socialLinks.twitter} target="_blank" rel="noopener noreferrer" aria-label="Twitter profile">
+                                <FaTwitter size="20" />
+                                <span>{formatSocialHandle(user.socialLinks.twitter, 'Twitter')}</span>
+                            </a>
+                        )}
+                        {user.socialLinks?.github && (
+                            <a href={user.socialLinks.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                                <FaGithub size="20" />
+                                <span>{formatSocialHandle(user.socialLinks.github, 'GitHub')}</span>
+                            </a>
+                        )}
+                        {user.socialLinks?.linkedin && (
+                            <a href={user.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+                                <FaLinkedin size="20" />
+                                <span>{formatSocialHandle(user.socialLinks.linkedin, 'LinkedIn')}</span>
+                            </a>
+                        )}
+                    </div>
+
                     {isOwnProfile && (
                         <RouterLink to="/profile/edit" className="btn edit-profile-btn">
                             Edit Profile
                         </RouterLink>
                     )}
                 </aside>
-                <main className="profile-posts">
-                    <div className="profile-posts-carousel-card wide" style={{ background: 'none', boxShadow: 'none', padding: 0, minWidth: 0, maxWidth: '100%' }}>
-                        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Posts by {user.username}</h2>
+
+                <main className="profile-posts-shell">
+                    <section className="profile-featured-card">
+                        <div className="profile-section-heading">
+                            <h2>Featured Stories</h2>
+                            <p>Latest highlights from {user.username}</p>
+                        </div>
+
                         {carouselPosts.length > 0 ? (
                             <div className="featured-carousel-container">
                                 <Swiper
                                     modules={[Navigation, Pagination, Autoplay, EffectFade]}
-                                    spaceBetween={30}
+                                    spaceBetween={24}
                                     slidesPerView={1}
                                     loop={true}
                                     effect="fade"
                                     autoplay={{ delay: 7000, disableOnInteraction: false }}
                                     pagination={{ clickable: true }}
                                     navigation={true}
-                                    className="featured-carousel"
+                                    className="profile-featured-carousel"
                                 >
                                     {carouselPosts.map(post => (
                                         <SwiperSlide key={post._id}>
-                                            <Link to={`/posts/${post._id}`} className="featured-slide-link">
-                                                <div className="featured-slide-content">
-                                                    <div className="featured-slide-media-background">
-                                                        <MediaPreview post={post} className="featured-slide-media" />
+                                            <Link to={`/posts/${post._id}`} className="profile-featured-slide-link">
+                                                <div className="profile-featured-slide-content">
+                                                    <div className="profile-featured-slide-media-background">
+                                                        <MediaPreview post={post} className="profile-featured-slide-media" />
                                                     </div>
-                                                    <div className="featured-slide-overlay">
-                                                        <h1 className="featured-slide-title">{post.title}</h1>
+                                                    <div className="profile-featured-slide-overlay">
+                                                        <h3 className="profile-featured-slide-title">{post.title}</h3>
+                                                        <p>{post.content?.replace(/<[^>]+>/g, '').slice(0, 120) || 'Open story'}</p>
                                                     </div>
                                                 </div>
                                             </Link>
@@ -116,71 +171,25 @@ const ProfilePage = () => {
                                 </Swiper>
                             </div>
                         ) : (
-                            <p style={{ textAlign: 'center', margin: '2rem 0' }}>This user has not posted anything yet.</p>
+                            <p className="profile-empty-state">This user has not posted anything yet.</p>
                         )}
-                    </div>
-                    {/* Grid for posts 4+ */}
+                    </section>
+
                     {gridPosts.length > 0 && (
-                        <div style={{ width: '100%', marginTop: '2.5rem' }}>
-                            <h3 className="profile-posts-grid-heading" style={{ textAlign: 'left', marginBottom: '1.2rem', fontWeight: 600 }}>
-                                More Posts
-                            </h3>
+                        <section className="profile-grid-section">
+                            <div className="profile-section-heading">
+                                <h3 className="profile-posts-grid-heading">More Posts</h3>
+                                <p>Browse the full archive from this author.</p>
+                            </div>
                             <div className="profile-posts-list">
                                 {gridPosts.map(post => (
                                     <ProfilePostItem key={post._id} post={post} />
                                 ))}
                             </div>
-                        </div>
+                        </section>
                     )}
                 </main>
             </div>
-            <style>{`
-                .profile-posts-carousel-card.wide {
-                    background: var(--card-background);
-                    border-radius: 16px;
-                    padding: 2rem;
-                    box-shadow: 0 4px 32px 0 rgba(0,0,0,0.10);
-                    min-width: 600px;
-                    max-width: 1100px;
-                    margin: 0 auto;
-                }
-                .profile-featured-carousel {
-                    width: 100%;
-                }
-                .profile-featured-slide-content {
-                    position: relative;
-                    min-height: 350px;
-                    border-radius: 12px;
-                    overflow: hidden;
-                }
-                .profile-featured-slide-media-background {
-                    position: absolute;
-                    top: 0; left: 0; right: 0; bottom: 0;
-                    z-index: 1;
-                    filter: brightness(0.5) blur(2px);
-                }
-                .profile-featured-slide-overlay {
-                    position: relative;
-                    z-index: 2;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100%;
-                    color: var(--text-color);
-                    padding: 2rem 1rem;
-                    text-align: center;
-                }
-                .profile-featured-slide-title {
-                    font-size: 2rem;
-                    font-weight: 700;
-                    margin-bottom: 0.5rem;
-                }
-                .profile-featured-slide-meta {
-                    color: var(--secondary-text-color);
-                    font-size: 1.1rem;
-                }
-            `}</style>
         </div>
     );
 };

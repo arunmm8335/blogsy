@@ -319,3 +319,21 @@ export const dislikeComment = async (commentId, token) => {
     throw error.response?.data || error;
   }
 };
+
+export const fetchAnalyticsSummary = async (date, token) => {
+  const config = token
+    ? {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    : undefined;
+
+  const query = date ? `?date=${encodeURIComponent(date)}` : '';
+  try {
+    const response = await api.get(`/analytics/summary${query}`, config);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

@@ -3,10 +3,10 @@
 }
 
 .skeleton-box {
-  background: linear-gradient(90deg, var(--card-background, #181818) 25%, var(--card-border, #232323) 50%, var(--card-background, #181818) 75%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.06) 100%);
+  background-size: 220% 100%;
   border-radius: 8px;
-  animation: skeleton-shimmer 1.2s infinite linear;
-  opacity: 0.7;
+  animation: skeleton-shimmer 1.3s infinite linear;
 }
 
 .post-item-card.skeleton {
@@ -15,12 +15,46 @@
   width: 100%;
 }
 
+.post-item-card.skeleton .post-item-image-wrapper {
+  aspect-ratio: 16 / 9;
+}
+
+.skeleton-pill {
+  width: 74px;
+  height: 24px;
+  border-radius: 999px;
+}
+
+.skeleton-line.title {
+  width: 86%;
+  height: 24px;
+  margin-top: 0.35rem;
+  margin-bottom: 0.6rem;
+}
+
+.skeleton-line.subtitle {
+  width: 42%;
+  height: 14px;
+}
+
+.skeleton-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.skeleton-count {
+  width: 20px;
+  height: 12px;
+  border-radius: 8px;
+}
+
 @keyframes skeleton-shimmer {
   0% {
-    background-position: -200px 0;
+    background-position: 200% 0;
   }
 
   100% {
-    background-position: 200px 0;
+    background-position: -200% 0;
   }
 }

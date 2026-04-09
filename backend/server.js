@@ -2,13 +2,15 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import connectDB from './config/db.js';
-import mongoose from 'mongoose';
+import connectDB, { getDbProvider } from './config/db.js';
+import { checkSupabaseHealth } from './config/supabase.js';
+import { initKafka, disconnectKafka } from './services/kafkaService.js';
 
 import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
+import analyticsRoutes from './routes/analyticsRoutes.js';
 
 dotenv.config();
 connectDB();
@@ -16,18 +18,18 @@ connectDB();
 const app = express();
 
 // CORS configuration
-   app.use(cors({
-     origin: [
-       'https://blogsy-m8ngw79uh-roys-projects-55a11432.vercel.app', // <-- your current Vercel domain
-        'https://blogsy-q7jo6xpb6-roys-projects-55a11432.vercel.app',
-        'https://blogsy-theta.vercel.app',
-       'http://localhost:3000',
-       'http://127.0.0.1:3000'
-     ],
-     credentials: true,
-     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-     allowedHeaders: ['Content-Type', 'Authorization']
-   }));
+app.use(cors({
+  origin: [
+    'https://blogsy-m8ngw79uh-roys-projects-55a11432.vercel.app', // <-- your current Vercel domain
+    'https://blogsy-q7jo6xpb6-roys-projects-55a11432.vercel.app',
+    'https://blogsy-theta.vercel.app',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json()); // To parse JSON bodies
 
 // Request logging middleware
@@ -61,19 +63,15 @@ app.get('/', (req, res) => {
 // Health check endpoint
 app.get('/health', async (req, res) => {
   try {
-    // Check database connection
-    const dbState = mongoose.connection.readyState;
-    const dbStatus = {
-      0: 'disconnected',
-      1: 'connected',
-      2: 'connecting',
-      3: 'disconnecting'
-    };
+    const dbProvider = getDbProvider();
+    const health = await checkSupabaseHealth();
+    const database = health.status;
 
     res.json({
       status: 'ok',
       timestamp: new Date().toISOString(),
-      database: dbStatus[dbState] || 'unknown',
+      dbProvider,
+      database,
       uptime: process.uptime()
     });
   } catch (error) {
@@ -89,25 +87,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-
-  // Handle MongoDB ObjectId errors
-  if (err.name === 'CastError' && err.kind === 'ObjectId') {
-    return res.status(400).json({
-      message: 'Invalid ID format'
-    });
-  }
-
-  // Handle MongoDB validation errors
-  if (err.name === 'ValidationError') {
-    const messages = Object.values(err.errors).map(val => val.message);
-    return res.status(400).json({
-      message: messages.join(', ')
-    });
-  }
 
   // Handle JWT errors
   if (err.name === 'JsonWebTokenError') {
@@ -130,6 +114,22 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const startServer = async () => {
+  await initKafka();
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+};
+
+process.on('SIGINT', async () => {
+  await disconnectKafka();
+  process.exit(0);
 });
+
+process.on('SIGTERM', async () => {
+  await disconnectKafka();
+  process.exit(0);
+});
+
+startServer();

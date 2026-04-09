@@ -1,22 +1,31 @@
-// Script to update existing posts to have status field
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import Post from '../models/Post.js';
+import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+        auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+        },
+    }
+);
+
 const updateExistingPosts = async () => {
     try {
-        // Connect to MongoDB
-        await mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        console.log('Connected to Supabase');
 
-        console.log('Connected to MongoDB');
+        const { data: postsWithoutStatus, error: findError } = await supabase
+            .from('posts')
+            .select('id')
+            .is('status', null);
 
-        // Find all posts that don't have a status field
-        const postsWithoutStatus = await Post.find({ status: { $exists: false } });
+        if (findError) {
+            throw findError;
+        }
 
         console.log(`Found ${postsWithoutStatus.length} posts without status field`);
 
@@ -25,23 +34,35 @@ const updateExistingPosts = async () => {
             return;
         }
 
-        // Update all posts to have status: 'published'
-        const result = await Post.updateMany(
-            { status: { $exists: false } },
-            { $set: { status: 'published' } }
-        );
+        const idsToUpdate = postsWithoutStatus.map((post) => post.id);
+        const { data: updatedRows, error: updateError } = await supabase
+            .from('posts')
+            .update({
+                status: 'published',
+                updated_at: new Date().toISOString(),
+            })
+            .in('id', idsToUpdate)
+            .select('id');
 
-        console.log(`Updated ${result.modifiedCount} posts with status: 'published'`);
+        if (updateError) {
+            throw updateError;
+        }
 
-        // Verify the update
-        const remainingPostsWithoutStatus = await Post.find({ status: { $exists: false } });
+        console.log(`Updated ${updatedRows.length} posts with status: 'published'`);
+
+        const { data: remainingPostsWithoutStatus, error: remainingError } = await supabase
+            .from('posts')
+            .select('id')
+            .is('status', null);
+
+        if (remainingError) {
+            throw remainingError;
+        }
+
         console.log(`Posts without status field after update: ${remainingPostsWithoutStatus.length}`);
 
     } catch (error) {
         console.error('Error updating posts:', error);
-    } finally {
-        await mongoose.disconnect();
-        console.log('Disconnected from MongoDB');
     }
 };
 

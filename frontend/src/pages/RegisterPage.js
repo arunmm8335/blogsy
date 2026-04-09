@@ -44,17 +44,18 @@ const RegisterPage = () => {
   return (
     <>
       <h2 className="form-title">Create an Account</h2>
+      <p className="form-subtitle">Start publishing in minutes with a clean, focused workspace.</p>
       <form onSubmit={onSubmit}>
         <div className="auth-card-form-group">
-          <span className="material-icons">person</span>
+          <span className="auth-input-icon" aria-hidden="true">U</span>
           <input type="text" name="username" value={username} onChange={onChange} placeholder="Username" required />
         </div>
         <div className="auth-card-form-group">
-          <span className="material-icons">mail</span>
+          <span className="auth-input-icon" aria-hidden="true">@</span>
           <input type="email" name="email" value={email} onChange={onChange} placeholder="Email Address" required />
         </div>
         <div className="auth-card-form-group">
-          <span className="material-icons">lock</span>
+          <span className="auth-input-icon" aria-hidden="true">*</span>
           <input type="password" name="password" value={password} onChange={onChange} placeholder="Password" minLength="6" required />
         </div>
         {error && <p className="error-message">{error}</p>}

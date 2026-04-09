@@ -1,18 +1,27 @@
-// In /src/components/PostItemSkeleton.js
 import React from 'react';
-import Skeleton from 'react-loading-skeleton';
-import './PostItem.css'; // Reuse styles for consistent layout
+import './PostItem.css';
+import './PostItemSkeleton.css';
 
 const PostItemSkeleton = () => {
   return (
-    <div className="post-item">
-      <Skeleton height={220} />
+    <div className="post-item-card post-item-skeleton" aria-hidden="true">
+      <div className="post-item-image-wrapper post-item-skeleton-box" />
       <div className="post-item-content">
-        <h2><Skeleton width={`80%`} /></h2>
-        <p><Skeleton width={`40%`} /></p>
-        <div>
-            <Skeleton width={70} inline style={{ marginRight: '10px' }} />
-            <Skeleton width={70} inline />
+        <div className="post-tags">
+          <span className="post-item-skeleton-pill" />
+          <span className="post-item-skeleton-pill" />
+        </div>
+
+        <div className="post-item-body">
+          <div className="post-item-skeleton-line title" />
+          <div className="post-item-skeleton-line subtitle" />
+        </div>
+
+        <div className="post-stats">
+          <div className="post-item-skeleton-dot" />
+          <div className="post-item-skeleton-count" />
+          <div className="post-item-skeleton-dot" />
+          <div className="post-item-skeleton-count" />
         </div>
       </div>
     </div>

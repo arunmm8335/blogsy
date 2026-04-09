@@ -1,14 +1,17 @@
 import React from 'react';
 
 const MediaRenderer = ({ item, postTitle, index, className }) => {
-    // Check if the fileType is 'video'.
-    // Your post object should have a 'fileType' property on each media item.
-    if (item.fileType === 'video') {
+    const type = String(item?.fileType || '').toLowerCase();
+    const mediaUrl = item?.url || '';
+    const looksLikeAudio = /\.(mp3|wav|aac|m4a|ogg)$/i.test(mediaUrl) || type === 'audio';
+    const looksLikeVideo = /\.(mp4|webm|mov|mkv)$/i.test(mediaUrl) || type === 'video';
+
+    if (looksLikeVideo) {
         return (
             <video
-                src={item.url}
-                controls // Show video controls (play, pause, volume)
-                className={className || "media-item"} // Use passed className or a default
+                src={mediaUrl}
+                controls
+                className={className || "media-item"}
                 aria-label={`${postTitle || 'Post'} video ${index + 1}`}
             >
                 Your browser does not support the video tag.
@@ -16,13 +19,28 @@ const MediaRenderer = ({ item, postTitle, index, className }) => {
         );
     }
 
-    // Default to rendering an image if it's not a video.
+    if (looksLikeAudio) {
+        return (
+            <div className={className || "media-item"}>
+                <audio controls src={mediaUrl} aria-label={`${postTitle || 'Post'} audio ${index + 1}`}>
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        );
+    }
+
+    if (mediaUrl) {
+        return (
+            <img
+                src={mediaUrl}
+                alt={`${postTitle || 'Post'} media ${index + 1}`}
+                className={className || "media-item"}
+            />
+        );
+    }
+
     return (
-        <img
-            src={item.url}
-            alt={`${postTitle || 'Post'} media ${index + 1}`}
-            className={className || "media-item"} // Use passed className or a default
-        />
+        <div className={className || "media-item"}>Media unavailable</div>
     );
 };
 

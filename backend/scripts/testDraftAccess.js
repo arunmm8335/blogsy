@@ -1,24 +1,34 @@
-// Script to test draft access by ID
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import Post from '../models/Post.js';
-import User from '../models/User.js';
+import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+        auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+        },
+    }
+);
+
 const testDraftAccess = async () => {
     try {
-        // Connect to MongoDB
-        await mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-
-        console.log('Connected to MongoDB');
+        console.log('Connected to Supabase');
 
         // Find all drafts
         console.log('\n📋 All drafts in database:');
-        const drafts = await Post.find({ status: 'draft' }).select('_id title authorId createdAt');
+        const { data: drafts, error: draftsError } = await supabase
+            .from('posts')
+            .select('id, title, author_id, created_at')
+            .eq('status', 'draft')
+            .order('created_at', { ascending: true });
+
+        if (draftsError) {
+            throw draftsError;
+        }
 
         if (drafts.length === 0) {
             console.log('No drafts found in database');
@@ -26,23 +36,43 @@ const testDraftAccess = async () => {
         }
 
         drafts.forEach((draft, index) => {
-            console.log(`${index + 1}. ID: ${draft._id} | Title: "${draft.title}" | Author: ${draft.authorId} | Created: ${draft.createdAt}`);
+            console.log(`${index + 1}. ID: ${draft.id} | Title: "${draft.title}" | Author: ${draft.author_id} | Created: ${draft.created_at}`);
         });
 
         // Test accessing the first draft by ID
         if (drafts.length > 0) {
             const firstDraft = drafts[0];
-            console.log(`\n🧪 Testing access to draft: ${firstDraft._id}`);
+            console.log(`\n🧪 Testing access to draft: ${firstDraft.id}`);
 
-            const foundPost = await Post.findById(firstDraft._id).populate('authorId', 'username profilePicture');
+            const { data: foundPost, error: postError } = await supabase
+                .from('posts')
+                .select(`
+                    id,
+                    title,
+                    status,
+                    author_id,
+                    users!posts_author_id_fkey(id, username, profile_picture)
+                `)
+                .eq('id', firstDraft.id)
+                .maybeSingle();
+
+            if (postError) {
+                throw postError;
+            }
 
             if (foundPost) {
                 console.log('✅ Draft found successfully!');
                 console.log('Post details:', {
-                    id: foundPost._id,
+                    id: foundPost.id,
                     title: foundPost.title,
                     status: foundPost.status,
-                    authorId: foundPost.authorId
+                    authorId: foundPost.users
+                        ? {
+                            id: foundPost.users.id,
+                            username: foundPost.users.username,
+                            profilePicture: foundPost.users.profile_picture || '',
+                        }
+                        : foundPost.author_id
                 });
             } else {
                 console.log('❌ Draft not found by ID');
@@ -51,9 +81,6 @@ const testDraftAccess = async () => {
 
     } catch (error) {
         console.error('Error:', error);
-    } finally {
-        await mongoose.disconnect();
-        console.log('\nDisconnected from MongoDB');
     }
 };
 

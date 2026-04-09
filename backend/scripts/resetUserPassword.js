@@ -1,23 +1,33 @@
-// Script to reset a user's password
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
+import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+        auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+        },
+    }
+);
+
 const resetUserPassword = async (email, newPassword) => {
     try {
-        // Connect to MongoDB
-        await mongoose.connect(process.env.MONGODB_URI || process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        console.log('Connected to Supabase');
 
-        console.log('Connected to MongoDB');
+        const { data: user, error: userError } = await supabase
+            .from('users')
+            .select('id, username, email')
+            .eq('email', email)
+            .maybeSingle();
 
-        // Find the user
-        const user = await User.findOne({ email: email });
+        if (userError) {
+            throw userError;
+        }
 
         if (!user) {
             console.log(`❌ User with email "${email}" not found`);
@@ -30,20 +40,17 @@ const resetUserPassword = async (email, newPassword) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-            // Update the password
-    user.password = hashedPassword;
-    
-    // Ensure socialLinks is properly initialized
-    if (!user.socialLinks) {
-      user.socialLinks = {
-        twitter: '',
-        github: '',
-        website: '',
-        linkedin: ''
-      };
-    }
-    
-    await user.save();
+        const { error: updateError } = await supabase
+            .from('users')
+            .update({
+                password_hash: hashedPassword,
+                updated_at: new Date().toISOString(),
+            })
+            .eq('id', user.id);
+
+        if (updateError) {
+            throw updateError;
+        }
 
         console.log(`✅ Password updated successfully for ${user.username}`);
         console.log(`📧 Email: ${user.email}`);
@@ -52,9 +59,6 @@ const resetUserPassword = async (email, newPassword) => {
 
     } catch (error) {
         console.error('Error:', error);
-    } finally {
-        await mongoose.disconnect();
-        console.log('\nDisconnected from MongoDB');
     }
 };
 
@@ -64,12 +68,7 @@ const newPassword = process.argv[3];
 
 if (!email || !newPassword) {
     console.log('Usage: node scripts/resetUserPassword.js <email> <new_password>');
-    console.log('\nExample: node scripts/resetUserPassword.js arunmyageri@gmail.com mynewpassword123');
-    console.log('\nAvailable emails:');
-    console.log('- arunmyageri1916@gmail.com');
-    console.log('- arunmmyageri.221cs113@nitk.edu.in');
-    console.log('- arunmyageri26@gmail.com');
-    console.log('- arunmyageri@gmail.com');
+    console.log('\nExample: node scripts/resetUserPassword.js user@example.com mynewpassword123');
 } else {
     resetUserPassword(email, newPassword);
 } 

@@ -5,12 +5,12 @@ const storage = multer.memoryStorage();
 
 // Filter to allow common image and video file types
 const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|mp4|mov|avi|webp/;
+    const allowedTypes = /jpeg|jpg|png|gif|mp4|mov|avi|webp|mp3|wav|m4a|ogg|webm/;
     const mimetype = allowedTypes.test(file.mimetype);
     if (mimetype) {
         cb(null, true);
     } else {
-        cb(new Error('Unsupported file type. Please upload images or videos.'), false);
+        cb(new Error('Unsupported file type. Please upload image, video, or audio files.'), false);
     }
 };
 

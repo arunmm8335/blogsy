@@ -3,14 +3,22 @@ import './ProfilePostItemSkeleton.css';
 
 const ProfilePostItemSkeleton = () => {
     return (
-        <div className="post-item-card skeleton">
-            <div className="post-item-image-wrapper skeleton-box" style={{ height: 220 }} />
+        <div className="post-item-card skeleton" aria-hidden="true">
+            <div className="post-item-image-wrapper skeleton-box" />
             <div className="post-item-content">
-                <h2><div className="skeleton-box" style={{ width: '80%', height: '22px', margin: '0.3rem 0' }} /></h2>
-                <p><div className="skeleton-box" style={{ width: '40%', height: '14px', margin: '0.2rem 0' }} /></p>
-                <div>
-                    <div className="skeleton-box" style={{ width: 70, height: 18, marginRight: 10, display: 'inline-block' }} />
-                    <div className="skeleton-box" style={{ width: 70, height: 18, display: 'inline-block' }} />
+                <div className="post-tags">
+                    <span className="skeleton-pill skeleton-box" />
+                    <span className="skeleton-pill skeleton-box" />
+                </div>
+                <div className="post-item-body">
+                    <div className="skeleton-line title skeleton-box" />
+                    <div className="skeleton-line subtitle skeleton-box" />
+                </div>
+                <div className="post-stats">
+                    <div className="skeleton-dot skeleton-box" />
+                    <div className="skeleton-count skeleton-box" />
+                    <div className="skeleton-dot skeleton-box" />
+                    <div className="skeleton-count skeleton-box" />
                 </div>
             </div>
         </div>

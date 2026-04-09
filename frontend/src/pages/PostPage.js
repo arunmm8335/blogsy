@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 // import { Helmet } from 'react-helmet-async'; // <-- Import Helmet
@@ -10,6 +10,7 @@ import PostPageSkeleton from './PostPageSkeleton'; // <-- CORRECTED IMPORT PATH
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import MediaRenderer from '../components/MediaRenderer'; // Assuming this is in /src/components/
+import './PostPage.css';
 
 const buildCommentTree = (comments) => {
     const commentMap = {};
@@ -27,6 +28,26 @@ const buildCommentTree = (comments) => {
     return commentTree;
 };
 
+const sortCommentTree = (nodes, sort = 'recent') => {
+    const multiplier = sort === 'oldest' ? 1 : -1;
+
+    const sorted = [...nodes].sort((a, b) => {
+        const aTime = new Date(a.createdAt).getTime();
+        const bTime = new Date(b.createdAt).getTime();
+        return (aTime - bTime) * multiplier;
+    });
+
+    return sorted.map((node) => ({
+        ...node,
+        replies: sortCommentTree(node.replies || [], sort),
+    }));
+};
+
+const countCommentTree = (nodes) => nodes.reduce(
+    (acc, node) => acc + 1 + countCommentTree(node.replies || []),
+    0
+);
+
 const PostPage = () => {
     const { id } = useParams();
     const { user, token } = useAuth();
@@ -38,7 +59,18 @@ const PostPage = () => {
     const [activeReplyId, setActiveReplyId] = useState(null);
     const [readingTime, setReadingTime] = useState(0);
     const [newCommentId, setNewCommentId] = useState(null);
+    const [commentSort, setCommentSort] = useState('recent');
     const { scrollYProgress } = useScroll();
+
+    const commentsForRender = useMemo(
+        () => sortCommentTree(comments, commentSort),
+        [comments, commentSort]
+    );
+
+    const commentCount = useMemo(
+        () => countCommentTree(comments),
+        [comments]
+    );
 
     const fetchData = useCallback(async (isInitialLoad = false) => {
         if (isInitialLoad) setLoading(true);
@@ -156,213 +188,102 @@ const PostPage = () => {
                 className="progress-bar"
                 style={{ scaleX: scrollYProgress }}
             />
-
-            {/* --- THIS IS THE FULL, CORRECTED STYLE BLOCK --- */}
-            <style>{`
-                /* --- Layout & Media --- */
-                .post-split-layout { display: grid; grid-template-columns: 1fr 1fr; padding: 2rem 6rem; gap: 4rem; width: 100%; box-sizing: border-box; }
-                .post-media-column { position: sticky; top: 2rem; align-self: start; max-height: 90vh; overflow-y: auto; }
-                .post-content-column { min-width: 0; }
-                @media (max-width: 1200px) { .post-split-layout { padding: 2rem 3rem; } }
-                @media (max-width: 1024px) { .post-split-layout { grid-template-columns: 1fr; padding: 1.5rem; gap: 2rem; } .post-media-column { position: static; max-height: none; } }
-                .media-gallery-container { display: flex; flex-wrap: wrap; gap: 1rem; }
-                .media-wrapper { flex: 1 1 200px; height: auto; aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden; background-color: var(--card-border, #000); }
-                .media-item { width: 100%; height: 100%; object-fit: cover; }
-                .post-media-column > img, .post-media-column > video { width: 100%; border-radius: 12px; object-fit: cover; }
-                .progress-bar { position: fixed; top: 0; left: 0; right: 0; height: 5px; background: var(--primary-color); transform-origin: 0%; z-index: 2000; }
-                .reading-time { color: var(--secondary-text-color); font-size: 0.9rem; margin-left: 0.75rem; font-style: italic; }
-
-                /* --- Post Content --- */
-                .post-page-title { font-size: 1.8rem; margin-bottom: 0.5rem; line-height: 1.2; }
-                .post-page-details { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; border-bottom: 1px solid var(--card-border); padding-bottom: 1rem; }
-                .post-page-meta a { color: var(--text-color); font-weight: 500; text-decoration: none; }
-                .post-page-meta a:hover { text-decoration: underline; }
-                .post-page-content { line-height: 1.7; font-size: 1rem; }
-                .post-page-content * { max-width: 100%; }
-                .post-tags-section { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
-                .post-tag-badge { background-color: var(--tag-background); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.9rem; }
-                .post-actions { margin-bottom: 1.5rem; display: flex; gap: 1rem; }
-                .btn { padding: 0.6rem 1.2rem; border-radius: 8px; text-decoration: none; display: inline-block; text-align: center; font-weight: 600; border: 1px solid transparent; background-color: var(--primary-color); color: var(--button-text-color); cursor: pointer; transition: background-color 0.2s; }
-                .btn:hover:not(:disabled) { background-color: var(--primary-hover-color); }
-                .btn:disabled { background-color: var(--secondary-text-color); cursor: not-allowed; opacity: 0.7; }
-                .btn-danger { background-color: #dc3545; border-color: #dc3545; }
-
-                /* --- RESTORED PROFESSIONAL COMMENT UI STYLES --- */
-                .comments-section { margin-top: 4rem; border-top: 1px solid var(--card-border); padding-top: 2rem; }
-                .comments-section h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 2rem; color: var(--text-color); }
-                .comments-list { margin-top: 2.5rem; }
-                .login-prompt { color: var(--secondary-text-color); }
-                .login-prompt a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
-                .login-prompt a:hover { text-decoration: underline; }
-                
-                /* STYLES FOR THE COMMENT INPUT FORM */
-                .comment-form { display: flex; flex-direction: column; gap: 1rem; }
-                .comment-form .textarea-wrapper { position: relative; }
-                .comment-form textarea {
-                    width: 100%; min-height: 80px; padding: 0.75rem 3rem 0.75rem 1rem;
-                    border-radius: 8px; border: 1px solid var(--card-border);
-                    background-color: var(--background-color); color: var(--text-color);
-                    font-size: 1rem; line-height: 1.5; resize: vertical;
-                    transition: border-color 0.2s, box-shadow 0.2s;
-                }
-                .comment-form textarea:focus {
-                    outline: none; border-color: var(--primary-color);
-                    box-shadow: 0 0 0 3px var(--primary-color-faded, rgba(99, 102, 241, 0.2));
-                }
-                .comment-form .emoji-toggle-btn {
-                    position: absolute; right: 10px; top: 12px; background: none; border: none;
-                    cursor: pointer; color: var(--secondary-text-color); font-size: 1.3rem; padding: 0.25rem;
-                }
-                .comment-form .emoji-picker-container { position: relative; z-index: 10; }
-                .comment-form .form-actions { display: flex; justify-content: flex-end; }
-                .modern-comments-section {
-                    max-width: 700px;
-                    margin: 3rem auto 0 auto;
-                    background: var(--card-background);
-                    border-radius: 16px;
-                    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-                    padding: 2.5rem 2rem;
-                }
-                .modern-comments-list {
-                    width: 100%;
-                }
-                .dribbble-comments-card {
-                    background: var(--card-background);
-                    border-radius: 18px;
-                    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
-                    padding: 2.5rem 2rem 2rem 2rem;
-                    max-width: 700px;
-                    margin: 3rem auto 0 auto;
-                    border: 1px solid var(--card-border);
-                }
-                .comments-header-row {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-bottom: 1.5rem;
-                }
-                .comments-title {
-                    font-size: 1.35rem;
-                    font-weight: 700;
-                    margin: 0;
-                    color: var(--text-color);
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-                .comments-count {
-                    background: var(--primary-color);
-                    color: var(--button-text-color);
-                    font-size: 1rem;
-                    font-weight: 600;
-                    border-radius: 12px;
-                    padding: 0.1rem 0.7rem;
-                    margin-left: 0.5rem;
-                }
-                .comments-sort-dropdown {
-                    border: 1px solid var(--card-border);
-                    border-radius: 8px;
-                    padding: 0.4rem 1.2rem 0.4rem 0.7rem;
-                    font-size: 1rem;
-                    background: var(--tag-background);
-                    color: var(--text-color);
-                    font-weight: 500;
-                    outline: none;
-                    cursor: pointer;
-                }
-                .comments-divider {
-                    border: none;
-                    border-top: 1.5px solid var(--card-border);
-                    margin: 2.5rem 0 1.5rem 0;
-                    width: 100%;
-                }
-                .dribbble-comments-card.centered-comments {
-                    max-width: 900px;
-                    margin: 0 auto 2.5rem auto;
-                    border-radius: 18px;
-                    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
-                    background: var(--card-background);
-                    border: 1px solid var(--card-border);
-                    padding: 2.5rem 2rem 2rem 2rem;
-                }
-            `}</style>
-
-            <div className="post-split-layout">
-                <div className="post-media-column">
-                    {post.media && post.media.length > 0 ? (
-                        <div className="media-gallery-container">
-                            {post.media.map((item, index) => (
-                                <div key={item.public_id || index} className="media-wrapper">
-                                    <MediaRenderer item={item} postTitle={post.title} index={index} />
-                                </div>
-                            ))}
-                        </div>
-                    ) : (post.coverImage && (
-                        <img src={post.coverImage} alt={post.title} />
-                    ))}
-                </div>
-
-                <div className="post-content-column">
+            <div className="post-reader-shell">
+                <article className="post-reader-card">
                     {user?._id === post.authorId?._id && (
                         <div className="post-actions">
-                            <Link to={`/posts/${id}/edit`} className="btn">Edit</Link>
-                            <button onClick={handleDelete} className="btn btn-danger">Delete</button>
+                            <Link to={`/posts/${id}/edit`} className="post-action-btn">Edit</Link>
+                            <button onClick={handleDelete} className="post-action-btn danger">Delete</button>
                         </div>
                     )}
-                    <h1 className="post-page-title">{post.title}</h1>
-                    <div className="post-page-details">
-                        <p className="post-page-meta">
-                            By <Link to={`/profile/${post.authorId?.username}`}>{post.authorId?.username || 'Unknown'}</Link> on {new Date(post.createdAt).toLocaleDateString()}
-                            {readingTime > 0 && <span className="reading-time">· {readingTime} min read</span>}
-                        </p>
-                        <LikeButton post={post} onLikeToggle={handleLikeToggle} />
-                    </div>
+
+                    <header className="post-header">
+                        <h1 className="post-page-title">{post.title}</h1>
+                        <div className="post-page-details">
+                            <p className="post-page-meta">
+                                By <Link to={`/profile/${post.authorId?.username}`}>{post.authorId?.username || 'Unknown'}</Link>
+                                {' '}on {new Date(post.createdAt).toLocaleDateString()}
+                                {readingTime > 0 && <span className="reading-time">· {readingTime} min read</span>}
+                            </p>
+                            <LikeButton post={post} onLikeToggle={handleLikeToggle} />
+                        </div>
+                    </header>
+
+                    {post.media && post.media.length > 0 ? (
+                        <section className="post-media-grid" aria-label="Post media gallery">
+                            {post.media.map((item, index) => (
+                                <div
+                                    key={item.public_id || item.url || index}
+                                    className={`post-media-cell ${index === 0 && post.media.length > 1 ? 'hero' : ''}`}
+                                >
+                                    <MediaRenderer item={item} postTitle={post.title} index={index} className="post-media-item" />
+                                </div>
+                            ))}
+                        </section>
+                    ) : post.coverImage ? (
+                        <section className="post-cover-wrapper" aria-label="Post cover image">
+                            <img src={post.coverImage} alt={post.title} className="post-cover-image" />
+                        </section>
+                    ) : (
+                        <section className="post-no-media" aria-label="Text-only post">
+                            Text-only story
+                        </section>
+                    )}
+
                     <div className="post-page-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+
                     {post.tags && post.tags.length > 0 && (
                         <div className="post-tags-section">
-                            {post.tags.map(tag => (<span key={tag} className="post-tag-badge">{tag}</span>))}
+                            {post.tags.map((tag) => (
+                                <span key={tag} className="post-tag-badge">#{tag}</span>
+                            ))}
                         </div>
                     )}
-                </div>
-            </div>
-            {/* <hr className="comments-divider" /> */}
-            <div className="comments-section dribbble-comments-card centered-comments" style={{ maxWidth: 1272, width: '100%', margin: '3rem auto 0 auto', background: 'var(--card-background, #fff)', borderRadius: 18, boxShadow: '0 4px 32px rgba(0,0,0,0.10)', border: '1.5px solid var(--border-color, #ececec)', padding: '2.5rem 2rem 2rem 2rem', position: 'relative' }}>
-                <div className="comments-header-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-                    <h2 className="comments-title" style={{ fontSize: '1.35rem', fontWeight: 700, margin: 0, color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>Comments <span className="comments-count" style={{ background: 'var(--primary-color)', color: 'var(--button-text-color)', fontSize: '1rem', fontWeight: 600, borderRadius: 12, padding: '0.1rem 0.7rem', marginLeft: '0.5rem' }}>{comments.reduce((acc, c) => acc + 1 + c.replies.length, 0)}</span></h2>
-                    <select className="comments-sort-dropdown" defaultValue="recent" style={{ border: '1px solid var(--card-border)', borderRadius: 8, padding: '0.4rem 1.2rem 0.4rem 0.7rem', fontSize: '1rem', background: 'var(--tag-background)', color: 'var(--text-color)', fontWeight: 500, outline: 'none', cursor: 'pointer' }}>
-                        <option value="recent">Most recent</option>
-                        <option value="oldest">Oldest</option>
-                    </select>
-                </div>
-                {user ? (
-                    <div style={{ maxWidth: '100%' }}>
-                        <CommentForm onSubmit={handleCommentSubmit} placeholder="Add comment..." buttonText="Submit" dribbbleStyle />
+                </article>
+
+                <section className="comments-section">
+                    <div className="comments-header-row">
+                        <h2 className="comments-title">
+                            Comments <span className="comments-count">{commentCount}</span>
+                        </h2>
+                        <select
+                            className="comments-sort-dropdown"
+                            value={commentSort}
+                            onChange={(e) => setCommentSort(e.target.value)}
+                        >
+                            <option value="recent">Most recent</option>
+                            <option value="oldest">Oldest</option>
+                        </select>
                     </div>
-                ) : (
-                    <p className="login-prompt" style={{ maxWidth: '100%' }}>Please <Link to="/login">log in</Link> to join the conversation.</p>
-                )}
-                <div className="comments-list modern-comments-list" style={{ maxWidth: '100%' }}>
-                    {comments.length > 0 ? (
-                        comments.map((comment) => (
-                            <Comment
-                                key={comment._id}
-                                comment={comment}
-                                onReply={handleCommentSubmit}
-                                activeReplyId={activeReplyId}
-                                setActiveReplyId={setActiveReplyId}
-                                user={user}
-                                onEdit={handleEditComment}
-                                onDelete={handleDeleteComment}
-                                highlightNew={newCommentId === comment._id}
-                                dribbbleStyle
-                                onLike={handleLikeComment}
-                                onDislike={handleDislikeComment}
-                            />
-                        ))
+
+                    {user ? (
+                        <CommentForm onSubmit={handleCommentSubmit} placeholder="Add comment..." buttonText="Submit" />
                     ) : (
-                        !loading && <p>No comments yet. Be the first to start the conversation!</p>
+                        <p className="login-prompt">Please <Link to="/login">log in</Link> to join the conversation.</p>
                     )}
-                </div>
+
+                    <div className="comments-list">
+                        {commentsForRender.length > 0 ? (
+                            commentsForRender.map((comment) => (
+                                <Comment
+                                    key={comment._id}
+                                    comment={comment}
+                                    onReply={handleCommentSubmit}
+                                    activeReplyId={activeReplyId}
+                                    setActiveReplyId={setActiveReplyId}
+                                    user={user}
+                                    onEdit={handleEditComment}
+                                    onDelete={handleDeleteComment}
+                                    highlightNew={newCommentId === comment._id}
+                                    onLike={handleLikeComment}
+                                    onDislike={handleDislikeComment}
+                                />
+                            ))
+                        ) : (
+                            !loading && <p className="no-comments">No comments yet. Be the first to start the conversation.</p>
+                        )}
+                    </div>
+                </section>
             </div>
         </>
     );

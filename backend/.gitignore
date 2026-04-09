@@ -1,3 +1,18 @@
-# .gitignore
-node_modules
+# dependencies
+node_modules/
+
+# local environment
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# runtime and logs
+logs/
+*.log
+
+# uploads and build artifacts
+uploads/
+dist/
+coverage/
